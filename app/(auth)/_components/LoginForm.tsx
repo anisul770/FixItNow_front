@@ -1,0 +1,60 @@
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import Link from "next/link"
+
+const LoginForm = () => {
+    return (
+        <form className="flex flex-col gap-5">
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    required
+                />
+            </div>
+
+            <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Link
+                        href="/forgot-password"
+                        className="text-xs font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                    >
+                        Forgot password?
+                    </Link>
+                </div>
+                <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder="••••••••"
+                    minLength={6}
+                    required
+                />
+            </div>
+
+            <div className="flex items-center gap-2.5">
+                <Checkbox id="remember" name="remember" />
+                <Label
+                    htmlFor="remember"
+                    className="text-sm font-normal text-muted-foreground"
+                >
+                    Keep me logged in for 30 days
+                </Label>
+            </div>
+
+            <Button type="submit" size="lg" className="w-full">
+                Log in
+            </Button>
+        </form>
+    )
+}
+
+export default LoginForm;
