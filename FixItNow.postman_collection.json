@@ -1,0 +1,2071 @@
+{
+  "info": {
+    "_postman_id": "6e39d43d-ded6-49a9-8bd9-87a6fe279911",
+    "name": "FixItNow",
+    "description": "# FixItNow API\n\nFixItNow is the backend API for an on-demand home-service booking platform that connects customers with service technicians. It handles the full workflow of user onboarding, browsing services, booking appointments, managing schedules, processing payments, and collecting reviews.\n\n## What this collection covers\n\nThe requests are grouped into folders by role and feature area:\n\n- **Auth** — User authentication, including login, and token refresh.\n    \n- **User** — User profile management (registration, profile retrieval, and updates).\n    \n- **Service** — Browsing and managing the services offered on the platform.\n    \n- **category** — Managing and listing service categories.\n    \n- **Technician** — Technician-specific operations such as viewing/adding/deleting available time slots, slots by service, and creating services.\n    \n- **Booking** — Creating, viewing, updating, and cancelling bookings for both customers and technicians.\n    \n- **payments** — Payment initialization, payment details, and viewing a user's payment history.\n    \n- **Review** — Creating, editing, and viewing reviews for technicians and services.\n    \n- **Admin** — Administrative endpoints for managing users, technicians, categories, bookings, payments, and user status.\n    \n\n## Usage\n\nRequests reference collection or environment variables (such as the base URL and auth token) so they can be run consistently across environments. Start by authenticating via the **Auth** folder to obtain a token, then use the remaining folders to exercise the platform's features.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54851279",
+    "_collection_link": "https://go.postman.co/collection/54851279-6e39d43d-ded6-49a9-8bd9-87a6fe279911?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\" : \"Anisul1\",\n    \"email\" : \"abc12@gamil.com\",\n    \"password\" : \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://fix-it-now-tau.vercel.app/api/users/register",
+              "protocol": "https",
+              "host": [
+                "fix-it-now-tau",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "users",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Register",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\" : \"Anisul1\",\n    \"email\" : \"abc11@gamil.com\",\n    \"password\" : \"1234\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:3000/api/users/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "users",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "576"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"240-YNJByU/igx3FnScRK6LhmPkh+QU\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:40:37 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 201,\n    \"message\": \"User registered successfully\",\n    \"data\": {\n        \"user\": {\n            \"id\": \"4a390052-91b8-420d-ad31-affa0c2bc5aa\",\n            \"name\": \"Anisul1\",\n            \"email\": \"abc11@gamil.com\",\n            \"role\": \"CUSTOMER\",\n            \"activeStatus\": \"ACTIVE\",\n            \"createdAt\": \"2026-08-18T00:40:37.664Z\",\n            \"updatedAt\": \"2026-08-18T00:40:37.664Z\",\n            \"profile\": {\n                \"id\": \"2a7121c3-61c0-46bc-afce-24123c9299eb\",\n                \"userId\": \"4a390052-91b8-420d-ad31-affa0c2bc5aa\",\n                \"profilePhoto\": null,\n                \"phone\": null,\n                \"address\": null,\n                \"createdAt\": \"2026-08-18T00:40:37.664Z\",\n                \"updatedAt\": \"2026-08-18T00:40:37.664Z\"\n            },\n            \"customerBookings\": [],\n            \"technicianProfile\": null\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "getProfile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://fix-it-now-tau.vercel.app/api/users/me",
+              "protocol": "https",
+              "host": [
+                "fix-it-now-tau",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "getProfile",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/users/me",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "3054"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"bee-6cP4tQLgpW9RBHSpV/auToFn1+8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:37:07 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"User profile retrieved successfully\",\n    \"data\": {\n        \"profile\": {\n            \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n            \"name\": \"Anisul1\",\n            \"email\": \"abc8@gamil.com\",\n            \"role\": \"TECHNICIAN\",\n            \"activeStatus\": \"ACTIVE\",\n            \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n            \"updatedAt\": \"2026-08-09T15:29:25.351Z\",\n            \"profile\": {\n                \"id\": \"5b4efda4-c269-48ac-8c15-d6792085f865\",\n                \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                \"profilePhoto\": null,\n                \"phone\": null,\n                \"address\": null,\n                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                \"updatedAt\": \"2026-08-09T15:29:25.351Z\"\n            },\n            \"customerBookings\": [],\n            \"customerReviews\": [],\n            \"technicianProfile\": {\n                \"id\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                \"bio\": null,\n                \"skills\": [],\n                \"location\": null,\n                \"experience\": 1,\n                \"hourlyRate\": 20,\n                \"averageRating\": 5,\n                \"totalReviews\": 1,\n                \"verified\": true,\n                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                \"updatedAt\": \"2026-08-16T16:36:43.407Z\",\n                \"bookings\": [\n                    {\n                        \"id\": \"e3bc889c-7275-417e-9f90-86dc19404c89\",\n                        \"customerId\": \"6123cbf5-5f8c-4f0c-8b24-d988b576a0c1\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                        \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                        \"startTime\": \"10:20\",\n                        \"endTime\": \"10:50\",\n                        \"address\": \"via walter fillak\",\n                        \"problemDescription\": null,\n                        \"totalPrice\": 20,\n                        \"status\": \"CANCELLED\",\n                        \"createdAt\": \"2026-08-10T15:32:59.943Z\",\n                        \"updatedAt\": \"2026-08-10T22:55:07.142Z\"\n                    },\n                    {\n                        \"id\": \"f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3\",\n                        \"customerId\": \"ca3ca428-5700-4508-ba6a-3bc1534cb586\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                        \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                        \"startTime\": \"10:00\",\n                        \"endTime\": \"10:30\",\n                        \"address\": \"via walter fillak\",\n                        \"problemDescription\": null,\n                        \"totalPrice\": 20,\n                        \"status\": \"COMPLETED\",\n                        \"createdAt\": \"2026-08-13T22:17:56.507Z\",\n                        \"updatedAt\": \"2026-08-16T16:31:11.210Z\"\n                    },\n                    {\n                        \"id\": \"df3cbbe5-82a6-4778-8940-f10e040fba0e\",\n                        \"customerId\": \"08cec257-9d81-41e9-9ee7-5e42e1ee9277\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                        \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                        \"startTime\": \"10:20\",\n                        \"endTime\": \"10:50\",\n                        \"address\": \"via walter fillak\",\n                        \"problemDescription\": null,\n                        \"totalPrice\": 20,\n                        \"status\": \"COMPLETED\",\n                        \"createdAt\": \"2026-08-10T22:34:44.857Z\",\n                        \"updatedAt\": \"2026-08-16T15:40:10.847Z\"\n                    },\n                    {\n                        \"id\": \"6479e159-9fab-4e2d-b47a-6b59d62027c0\",\n                        \"customerId\": \"ca3ca428-5700-4508-ba6a-3bc1534cb586\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                        \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                        \"startTime\": \"15:00\",\n                        \"endTime\": \"15:30\",\n                        \"address\": \"via walter fillak\",\n                        \"problemDescription\": null,\n                        \"totalPrice\": 20,\n                        \"status\": \"PAID\",\n                        \"createdAt\": \"2026-08-13T16:41:31.938Z\",\n                        \"updatedAt\": \"2026-08-16T22:07:20.280Z\"\n                    }\n                ],\n                \"reviews\": [\n                    {\n                        \"id\": \"fa25cdd5-f14b-4524-93de-0e8c2901de76\",\n                        \"bookingId\": \"df3cbbe5-82a6-4778-8940-f10e040fba0e\",\n                        \"customerId\": \"08cec257-9d81-41e9-9ee7-5e42e1ee9277\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"rating\": 5,\n                        \"comment\": \"This is updated again\",\n                        \"createdAt\": \"2026-08-16T16:32:39.581Z\",\n                        \"updatedAt\": \"2026-08-16T16:35:35.380Z\"\n                    }\n                ]\n            }\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\" : \"fix it name\",\n    \"phone\" : \"0123456789\",\n    \"address\" : \"dhaka bangladesh\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://fix-it-now-tau.vercel.app/api/users/my-profile",
+              "protocol": "https",
+              "host": [
+                "fix-it-now-tau",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "users",
+                "my-profile"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "update",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\" : \"updated name\",\n    \"phone\" : \"0123456789\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:3000/api/users/my-profile",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "users",
+                    "my-profile"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "590"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"24e-A9W3pqhR9eKqW3FvZivJ9cyVsUI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:40:44 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"User updated successfully\",\n    \"data\": {\n        \"updatedUser\": {\n            \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n            \"name\": \"updated name\",\n            \"email\": \"abc8@gamil.com\",\n            \"role\": \"TECHNICIAN\",\n            \"activeStatus\": \"ACTIVE\",\n            \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n            \"updatedAt\": \"2026-08-18T00:40:44.354Z\",\n            \"profile\": {\n                \"id\": \"5b4efda4-c269-48ac-8c15-d6792085f865\",\n                \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                \"profilePhoto\": null,\n                \"phone\": \"0123456789\",\n                \"address\": null,\n                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                \"updatedAt\": \"2026-08-18T00:40:44.354Z\"\n            },\n            \"customerBookings\": [],\n            \"customerReviews\": []\n        }\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"abc6@gamil.com\",\n    \"password\": \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://fix-it-now-tau.vercel.app/api/auth/login",
+              "protocol": "https",
+              "host": [
+                "fix-it-now-tau",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://fix-it-now-tau.vercel.app/api/auth/refresh-token",
+              "protocol": "https",
+              "host": [
+                "fix-it-now-tau",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Technician",
+      "item": [
+        {
+          "name": "profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/technician/profile",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "technician",
+                "profile"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "profile",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/technician/profile",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "technician",
+                    "profile"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "8185"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1ff9-aB89OyR9X7o9kUrLTdtD37Ed4U0\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:38:59 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Technician profile is retrived successfully\",\n    \"data\": {\n        \"profile\": {\n            \"id\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n            \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n            \"bio\": null,\n            \"skills\": [],\n            \"location\": null,\n            \"experience\": 1,\n            \"hourlyRate\": 20,\n            \"averageRating\": 5,\n            \"totalReviews\": 1,\n            \"verified\": true,\n            \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n            \"updatedAt\": \"2026-08-16T16:36:43.407Z\",\n            \"user\": {\n                \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                \"name\": \"Anisul1\",\n                \"email\": \"abc8@gamil.com\",\n                \"role\": \"TECHNICIAN\",\n                \"activeStatus\": \"ACTIVE\",\n                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                \"updatedAt\": \"2026-08-09T15:29:25.351Z\"\n            },\n            \"services\": [\n                {\n                    \"id\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"title\": \"new service\",\n                    \"description\": \"This is check\",\n                    \"price\": 20,\n                    \"duration\": 30,\n                    \"rating\": 0,\n                    \"isActive\": true,\n                    \"createdAt\": \"2026-08-09T23:31:29.423Z\",\n                    \"updatedAt\": \"2026-08-09T23:31:29.423Z\"\n                },\n                {\n                    \"id\": \"383ee03f-c600-4497-b255-dceb658d7044\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"title\": \"new service 2\",\n                    \"description\": \"This is check\",\n                    \"price\": 20,\n                    \"duration\": 30,\n                    \"rating\": 0,\n                    \"isActive\": true,\n                    \"createdAt\": \"2026-08-09T23:33:02.038Z\",\n                    \"updatedAt\": \"2026-08-09T23:33:02.038Z\"\n                },\n                {\n                    \"id\": \"7863365a-97f6-4fb1-986f-2234f9189ef2\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"title\": \"new service 3\",\n                    \"description\": \"This is check 3\",\n                    \"price\": 20,\n                    \"duration\": 30,\n                    \"rating\": 0,\n                    \"isActive\": true,\n                    \"createdAt\": \"2026-08-11T23:08:32.674Z\",\n                    \"updatedAt\": \"2026-08-11T23:08:32.674Z\"\n                },\n                {\n                    \"id\": \"f1766f94-af90-4132-b293-a6b0ea010425\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"title\": \"new service 3\",\n                    \"description\": \"This is check 4\",\n                    \"price\": 20,\n                    \"duration\": 30,\n                    \"rating\": 0,\n                    \"isActive\": true,\n                    \"createdAt\": \"2026-08-18T00:00:12.457Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:12.457Z\"\n                }\n            ],\n            \"availability\": [\n                {\n                    \"id\": \"ccd0541c-a3f9-4ba5-903f-81ede11ff668\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"10:50\",\n                    \"endTime\": \"11:40\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                    \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n                },\n                {\n                    \"id\": \"b48d43eb-e03d-4e72-93bb-3930e4dd615e\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"11:40\",\n                    \"endTime\": \"12:30\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                    \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n                },\n                {\n                    \"id\": \"387d24a8-ddcf-444e-95cf-a15c55a94852\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"12:30\",\n                    \"endTime\": \"13:20\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                    \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n                },\n                {\n                    \"id\": \"f2c37960-4ffd-4e01-8ded-c3464154c4b4\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"14:10\",\n                    \"endTime\": \"15:00\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                    \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n                },\n                {\n                    \"id\": \"de985829-af85-4b97-951c-c0277e946a7b\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"15:50\",\n                    \"endTime\": \"16:40\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                    \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n                },\n                {\n                    \"id\": \"250df553-4132-4912-beb8-96ed5418145d\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"15:00\",\n                    \"endTime\": \"15:50\",\n                    \"isBooked\": true,\n                    \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                    \"updatedAt\": \"2026-08-13T16:41:31.912Z\"\n                },\n                {\n                    \"id\": \"19b703cb-93d9-4d57-8e40-0d0909392a21\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"10:00\",\n                    \"endTime\": \"10:50\",\n                    \"isBooked\": true,\n                    \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                    \"updatedAt\": \"2026-08-13T22:17:56.475Z\"\n                },\n                {\n                    \"id\": \"74bfb191-784f-4629-b89a-fa029f306dc9\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"10:00\",\n                    \"endTime\": \"10:50\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n                },\n                {\n                    \"id\": \"bc48780f-a295-417a-a90e-0450da2c2cc9\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"10:50\",\n                    \"endTime\": \"11:40\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n                },\n                {\n                    \"id\": \"2d6015de-70a5-4fd8-b393-216bfbd5ecc1\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"11:40\",\n                    \"endTime\": \"12:30\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n                },\n                {\n                    \"id\": \"2b982386-d423-443f-b38f-609bdb6497e0\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"12:30\",\n                    \"endTime\": \"13:20\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n                },\n                {\n                    \"id\": \"432d5c47-cd26-47a1-b09c-166092561565\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"13:20\",\n                    \"endTime\": \"14:10\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n                },\n                {\n                    \"id\": \"8991bcf9-7f15-46b5-8a53-79b661b6c462\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"14:10\",\n                    \"endTime\": \"15:00\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n                },\n                {\n                    \"id\": \"16690da7-40a6-4e90-bded-69a40e2c51e7\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"15:00\",\n                    \"endTime\": \"15:50\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n                },\n                {\n                    \"id\": \"954bf572-94fb-462d-846d-cefe2fce3ec4\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"date\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"15:50\",\n                    \"endTime\": \"16:40\",\n                    \"isBooked\": false,\n                    \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                    \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n                }\n            ],\n            \"bookings\": [\n                {\n                    \"id\": \"e3bc889c-7275-417e-9f90-86dc19404c89\",\n                    \"customerId\": \"6123cbf5-5f8c-4f0c-8b24-d988b576a0c1\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                    \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"10:20\",\n                    \"endTime\": \"10:50\",\n                    \"address\": \"via walter fillak\",\n                    \"problemDescription\": null,\n                    \"totalPrice\": 20,\n                    \"status\": \"CANCELLED\",\n                    \"createdAt\": \"2026-08-10T15:32:59.943Z\",\n                    \"updatedAt\": \"2026-08-10T22:55:07.142Z\"\n                },\n                {\n                    \"id\": \"f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3\",\n                    \"customerId\": \"ca3ca428-5700-4508-ba6a-3bc1534cb586\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                    \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"10:00\",\n                    \"endTime\": \"10:30\",\n                    \"address\": \"via walter fillak\",\n                    \"problemDescription\": null,\n                    \"totalPrice\": 20,\n                    \"status\": \"COMPLETED\",\n                    \"createdAt\": \"2026-08-13T22:17:56.507Z\",\n                    \"updatedAt\": \"2026-08-16T16:31:11.210Z\"\n                },\n                {\n                    \"id\": \"df3cbbe5-82a6-4778-8940-f10e040fba0e\",\n                    \"customerId\": \"08cec257-9d81-41e9-9ee7-5e42e1ee9277\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                    \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"10:20\",\n                    \"endTime\": \"10:50\",\n                    \"address\": \"via walter fillak\",\n                    \"problemDescription\": null,\n                    \"totalPrice\": 20,\n                    \"status\": \"COMPLETED\",\n                    \"createdAt\": \"2026-08-10T22:34:44.857Z\",\n                    \"updatedAt\": \"2026-08-16T15:40:10.847Z\"\n                },\n                {\n                    \"id\": \"6479e159-9fab-4e2d-b47a-6b59d62027c0\",\n                    \"customerId\": \"ca3ca428-5700-4508-ba6a-3bc1534cb586\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                    \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                    \"startTime\": \"15:00\",\n                    \"endTime\": \"15:30\",\n                    \"address\": \"via walter fillak\",\n                    \"problemDescription\": null,\n                    \"totalPrice\": 20,\n                    \"status\": \"PAID\",\n                    \"createdAt\": \"2026-08-13T16:41:31.938Z\",\n                    \"updatedAt\": \"2026-08-16T22:07:20.280Z\"\n                }\n            ],\n            \"reviews\": [\n                {\n                    \"id\": \"fa25cdd5-f14b-4524-93de-0e8c2901de76\",\n                    \"bookingId\": \"df3cbbe5-82a6-4778-8940-f10e040fba0e\",\n                    \"customerId\": \"08cec257-9d81-41e9-9ee7-5e42e1ee9277\",\n                    \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"rating\": 5,\n                    \"comment\": \"This is updated again\",\n                    \"createdAt\": \"2026-08-16T16:32:39.581Z\",\n                    \"updatedAt\": \"2026-08-16T16:35:35.380Z\",\n                    \"customer\": {\n                        \"name\": \"Anisul1\"\n                    }\n                }\n            ]\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "newService",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\":\"new service 3\",\n    \"description\" : \"This is check 4\",\n    \"categoryId\" : \"4ed20d10-6253-4e06-b438-532043328f14\",\n    \"price\" : 20,\n    \"duration\" : 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/api/technician/new_service",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "technician",
+                "new_service"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "newService",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\":\"new service 3\",\n    \"description\" : \"This is check 5\",\n    \"categoryId\" : \"4ed20d10-6253-4e06-b438-532043328f14\",\n    \"price\" : 20,\n    \"duration\" : 30\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:3000/api/technician/new_service",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "technician",
+                    "new_service"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "455"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1c7-TkSzwFEZ0ZZAevo0l4GgsxzbXF8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:39:14 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 201,\n    \"message\": \"new service 3 service is created successfully\",\n    \"data\": {\n        \"createdService\": {\n            \"id\": \"0422f238-c6f2-4e95-a735-78c86573fa62\",\n            \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n            \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n            \"title\": \"new service 3\",\n            \"description\": \"This is check 5\",\n            \"price\": 20,\n            \"duration\": 30,\n            \"rating\": 0,\n            \"isActive\": true,\n            \"createdAt\": \"2026-08-18T00:39:14.087Z\",\n            \"updatedAt\": \"2026-08-18T00:39:14.087Z\"\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "newSlots",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"date\" : \"10/12/2026\",\n    \"startTime\" : \"10:00\",\n    \"endTime\" : \"17:00\",\n    \"slotDuration\" : 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/api/technician/new_slots",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "technician",
+                "new_slots"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "newSlots",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"date\" : \"10/12/2026\",\n    \"startTime\" : \"10:00\",\n    \"endTime\" : \"17:00\",\n    \"slotDuration\" : 50\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:3000/api/technician/new_slots",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "technician",
+                    "new_slots"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "114"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"72-AU4DCsv/emnXjQP6/oua4tali5U\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:39:21 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 201,\n    \"message\": \"8 slots are created successfully\",\n    \"data\": {\n        \"createdSlots\": {\n            \"count\": 8\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "mySlots",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/technician/my_slots",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "technician",
+                "my_slots"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "mySlots",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/technician/my_slots",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "technician",
+                    "my_slots"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "6240"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1860-yG6JPSiLXsLsyj/xc4uDlyaSJsc\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:39:26 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Your slots are retrived successfully\",\n    \"data\": {\n        \"slots\": [\n            {\n                \"id\": \"f95f4f3f-8374-47f9-b98d-6781a6f26d9c\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:00\",\n                \"endTime\": \"10:50\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"19b703cb-93d9-4d57-8e40-0d0909392a21\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:00\",\n                \"endTime\": \"10:50\",\n                \"isBooked\": true,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-13T22:17:56.475Z\"\n            },\n            {\n                \"id\": \"74bfb191-784f-4629-b89a-fa029f306dc9\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:00\",\n                \"endTime\": \"10:50\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"51523a8c-25f5-40ae-a38d-6d51e9b3f8ee\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:50\",\n                \"endTime\": \"11:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"ccd0541c-a3f9-4ba5-903f-81ede11ff668\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:50\",\n                \"endTime\": \"11:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"bc48780f-a295-417a-a90e-0450da2c2cc9\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:50\",\n                \"endTime\": \"11:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"2d6015de-70a5-4fd8-b393-216bfbd5ecc1\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"11:40\",\n                \"endTime\": \"12:30\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"b48d43eb-e03d-4e72-93bb-3930e4dd615e\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"11:40\",\n                \"endTime\": \"12:30\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"5d9eded0-b869-475a-bcf5-880016844e9d\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"11:40\",\n                \"endTime\": \"12:30\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"387d24a8-ddcf-444e-95cf-a15c55a94852\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"12:30\",\n                \"endTime\": \"13:20\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"2b982386-d423-443f-b38f-609bdb6497e0\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"12:30\",\n                \"endTime\": \"13:20\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"b769ac2d-220a-404c-9758-1a4f88bd358d\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"12:30\",\n                \"endTime\": \"13:20\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"432d5c47-cd26-47a1-b09c-166092561565\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"13:20\",\n                \"endTime\": \"14:10\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"baa42084-3e3b-43d3-9f0a-a3495cfb080f\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"13:20\",\n                \"endTime\": \"14:10\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"8333cbfb-a591-4d57-b648-19a03b102802\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"14:10\",\n                \"endTime\": \"15:00\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"f2c37960-4ffd-4e01-8ded-c3464154c4b4\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"14:10\",\n                \"endTime\": \"15:00\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"8991bcf9-7f15-46b5-8a53-79b661b6c462\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"14:10\",\n                \"endTime\": \"15:00\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"16690da7-40a6-4e90-bded-69a40e2c51e7\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:00\",\n                \"endTime\": \"15:50\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"250df553-4132-4912-beb8-96ed5418145d\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:00\",\n                \"endTime\": \"15:50\",\n                \"isBooked\": true,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-13T16:41:31.912Z\"\n            },\n            {\n                \"id\": \"1003f5f9-d03c-4be0-a4c7-aa59c816a318\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:00\",\n                \"endTime\": \"15:50\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"de985829-af85-4b97-951c-c0277e946a7b\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:50\",\n                \"endTime\": \"16:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"954bf572-94fb-462d-846d-cefe2fce3ec4\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:50\",\n                \"endTime\": \"16:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"92e6a422-b34f-4e80-91a9-d701c2e6fc80\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:50\",\n                \"endTime\": \"16:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "deleteSlots",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/technician/slots/19b703cb-93d9-4d57-8e40-0d0909392a21",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "technician",
+                "slots",
+                "19b703cb-93d9-4d57-8e40-0d0909392a21"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "deleteSlots",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/technician/slots/19b703cb-93d9-4d57-8e40-0d0909392a21",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "technician",
+                    "slots",
+                    "19b703cb-93d9-4d57-8e40-0d0909392a21"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "511"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1ff-h1rQ2jrhQENDxWpi0iMNzsdTTH4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:39:31 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"statusCode\": 400,\n    \"name\": \"Error\",\n    \"message\": \"A booked slot can not be deleted\",\n    \"error\": \"Error: A booked slot can not be deleted\\n    at Object.deleteSlot (file:///Users/Anisul/Level_2/Be_A_Prisma_Pro/FixItNow/dist/server.js:882:11)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\\n    at async file:///Users/Anisul/Level_2/Be_A_Prisma_Pro/FixItNow/dist/server.js:994:25\\n    at async file:///Users/Anisul/Level_2/Be_A_Prisma_Pro/FixItNow/dist/server.js:443:7\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "slotByService",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/technician/availability/7863365a-97f6-4fb1-986f-2234f9189ef2",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "technician",
+                "availability",
+                "7863365a-97f6-4fb1-986f-2234f9189ef2"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "slotByService",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/technician/availability/7863365a-97f6-4fb1-986f-2234f9189ef2",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "technician",
+                    "availability",
+                    "7863365a-97f6-4fb1-986f-2234f9189ef2"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "5709"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"164d-Kw4ufUhNH4GYO3R981TI1MDdMYY\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:39:37 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Availability is retrived successfully\",\n    \"data\": {\n        \"slots\": [\n            {\n                \"id\": \"f95f4f3f-8374-47f9-b98d-6781a6f26d9c\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:00\",\n                \"endTime\": \"10:50\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"74bfb191-784f-4629-b89a-fa029f306dc9\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:00\",\n                \"endTime\": \"10:50\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"bc48780f-a295-417a-a90e-0450da2c2cc9\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:50\",\n                \"endTime\": \"11:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"51523a8c-25f5-40ae-a38d-6d51e9b3f8ee\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:50\",\n                \"endTime\": \"11:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"ccd0541c-a3f9-4ba5-903f-81ede11ff668\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:50\",\n                \"endTime\": \"11:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"b48d43eb-e03d-4e72-93bb-3930e4dd615e\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"11:40\",\n                \"endTime\": \"12:30\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"2d6015de-70a5-4fd8-b393-216bfbd5ecc1\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"11:40\",\n                \"endTime\": \"12:30\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"5d9eded0-b869-475a-bcf5-880016844e9d\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"11:40\",\n                \"endTime\": \"12:30\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"b769ac2d-220a-404c-9758-1a4f88bd358d\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"12:30\",\n                \"endTime\": \"13:20\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"2b982386-d423-443f-b38f-609bdb6497e0\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"12:30\",\n                \"endTime\": \"13:20\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"387d24a8-ddcf-444e-95cf-a15c55a94852\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"12:30\",\n                \"endTime\": \"13:20\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"baa42084-3e3b-43d3-9f0a-a3495cfb080f\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"13:20\",\n                \"endTime\": \"14:10\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"432d5c47-cd26-47a1-b09c-166092561565\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"13:20\",\n                \"endTime\": \"14:10\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"8991bcf9-7f15-46b5-8a53-79b661b6c462\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"14:10\",\n                \"endTime\": \"15:00\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"f2c37960-4ffd-4e01-8ded-c3464154c4b4\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"14:10\",\n                \"endTime\": \"15:00\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"8333cbfb-a591-4d57-b648-19a03b102802\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"14:10\",\n                \"endTime\": \"15:00\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"16690da7-40a6-4e90-bded-69a40e2c51e7\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:00\",\n                \"endTime\": \"15:50\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            },\n            {\n                \"id\": \"1003f5f9-d03c-4be0-a4c7-aa59c816a318\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:00\",\n                \"endTime\": \"15:50\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"de985829-af85-4b97-951c-c0277e946a7b\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:50\",\n                \"endTime\": \"16:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-11T23:12:53.985Z\",\n                \"updatedAt\": \"2026-08-11T23:12:53.985Z\"\n            },\n            {\n                \"id\": \"92e6a422-b34f-4e80-91a9-d701c2e6fc80\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:50\",\n                \"endTime\": \"16:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:39:21.208Z\",\n                \"updatedAt\": \"2026-08-18T00:39:21.208Z\"\n            },\n            {\n                \"id\": \"954bf572-94fb-462d-846d-cefe2fce3ec4\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"date\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:50\",\n                \"endTime\": \"16:40\",\n                \"isBooked\": false,\n                \"createdAt\": \"2026-08-18T00:00:16.308Z\",\n                \"updatedAt\": \"2026-08-18T00:00:16.308Z\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "all Technician",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/technician/all",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "technician",
+                "all"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "all Technician",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/technician/all",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "technician",
+                    "all"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1128"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"468-1hQtK5Hh5yxEw+F3fsmfsRBqkGc\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:39:41 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Technicians are retrived successfully\",\n    \"data\": {\n        \"technicians\": [\n            {\n                \"id\": \"39a18b95-beb6-4704-bd80-803d7a7039ca\",\n                \"userId\": \"e0f41200-f8ec-4aa1-b82f-870ae2217eac\",\n                \"bio\": null,\n                \"skills\": [],\n                \"location\": null,\n                \"experience\": 1,\n                \"hourlyRate\": 20,\n                \"averageRating\": 0,\n                \"totalReviews\": 0,\n                \"verified\": true,\n                \"createdAt\": \"2026-08-09T15:34:30.954Z\",\n                \"updatedAt\": \"2026-08-11T14:04:26.365Z\",\n                \"user\": {\n                    \"id\": \"e0f41200-f8ec-4aa1-b82f-870ae2217eac\",\n                    \"name\": \"Anisul1\",\n                    \"email\": \"abc9@gamil.com\",\n                    \"role\": \"TECHNICIAN\",\n                    \"activeStatus\": \"ACTIVE\",\n                    \"createdAt\": \"2026-08-09T15:34:30.954Z\",\n                    \"updatedAt\": \"2026-08-09T15:34:30.954Z\"\n                }\n            },\n            {\n                \"id\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                \"bio\": null,\n                \"skills\": [],\n                \"location\": null,\n                \"experience\": 1,\n                \"hourlyRate\": 20,\n                \"averageRating\": 5,\n                \"totalReviews\": 1,\n                \"verified\": true,\n                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                \"updatedAt\": \"2026-08-16T16:36:43.407Z\",\n                \"user\": {\n                    \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                    \"name\": \"Anisul1\",\n                    \"email\": \"abc8@gamil.com\",\n                    \"role\": \"TECHNICIAN\",\n                    \"activeStatus\": \"ACTIVE\",\n                    \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                    \"updatedAt\": \"2026-08-09T15:29:25.351Z\"\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "allUsers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/admin/users",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "newCategory",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\" : \"Home Clean 2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/api/admin/new_category",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "admin",
+                "new_category"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verifyTechnician",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/admin/b83fa72a-7bf7-44c0-aea6-0d04090dca19/verify_technician",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "admin",
+                "b83fa72a-7bf7-44c0-aea6-0d04090dca19",
+                "verify_technician"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "allBookings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/admin/bookings",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "admin",
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "userStatus",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"activeStatus\" : \"BLOCKED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/api/admin/a1edf5e5-c90f-433f-bd84-1c8a4304f4a7/status",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "admin",
+                "a1edf5e5-c90f-433f-bd84-1c8a4304f4a7",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "allPayments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/admin/payments",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "admin",
+                "payments"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "category",
+      "item": [
+        {
+          "name": "allCategory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/category/all",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "category",
+                "all"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "allCategory",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/category/all",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "category",
+                    "all"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "3518"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"dbe-buE70oHMXvE1ONk35OJ22/fPRZs\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:40:58 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"All the categories are retrieved successfully\",\n    \"data\": {\n        \"categories\": [\n            {\n                \"id\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                \"name\": \"Home Clean\",\n                \"description\": null,\n                \"icon\": null,\n                \"createdAt\": \"2026-08-09T18:15:47.895Z\",\n                \"updatedAt\": \"2026-08-09T18:15:47.895Z\",\n                \"services\": [\n                    {\n                        \"id\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                        \"title\": \"new service\",\n                        \"description\": \"This is check\",\n                        \"price\": 20,\n                        \"duration\": 30,\n                        \"rating\": 0,\n                        \"isActive\": true,\n                        \"createdAt\": \"2026-08-09T23:31:29.423Z\",\n                        \"updatedAt\": \"2026-08-09T23:31:29.423Z\",\n                        \"technician\": {\n                            \"experience\": 1,\n                            \"hourlyRate\": 20,\n                            \"user\": {\n                                \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                                \"name\": \"updated name\",\n                                \"email\": \"abc8@gamil.com\",\n                                \"role\": \"TECHNICIAN\",\n                                \"activeStatus\": \"ACTIVE\",\n                                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                                \"updatedAt\": \"2026-08-18T00:40:44.354Z\"\n                            }\n                        }\n                    },\n                    {\n                        \"id\": \"383ee03f-c600-4497-b255-dceb658d7044\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                        \"title\": \"new service 2\",\n                        \"description\": \"This is check\",\n                        \"price\": 20,\n                        \"duration\": 30,\n                        \"rating\": 0,\n                        \"isActive\": true,\n                        \"createdAt\": \"2026-08-09T23:33:02.038Z\",\n                        \"updatedAt\": \"2026-08-09T23:33:02.038Z\",\n                        \"technician\": {\n                            \"experience\": 1,\n                            \"hourlyRate\": 20,\n                            \"user\": {\n                                \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                                \"name\": \"updated name\",\n                                \"email\": \"abc8@gamil.com\",\n                                \"role\": \"TECHNICIAN\",\n                                \"activeStatus\": \"ACTIVE\",\n                                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                                \"updatedAt\": \"2026-08-18T00:40:44.354Z\"\n                            }\n                        }\n                    },\n                    {\n                        \"id\": \"7863365a-97f6-4fb1-986f-2234f9189ef2\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                        \"title\": \"new service 3\",\n                        \"description\": \"This is check 3\",\n                        \"price\": 20,\n                        \"duration\": 30,\n                        \"rating\": 0,\n                        \"isActive\": true,\n                        \"createdAt\": \"2026-08-11T23:08:32.674Z\",\n                        \"updatedAt\": \"2026-08-11T23:08:32.674Z\",\n                        \"technician\": {\n                            \"experience\": 1,\n                            \"hourlyRate\": 20,\n                            \"user\": {\n                                \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                                \"name\": \"updated name\",\n                                \"email\": \"abc8@gamil.com\",\n                                \"role\": \"TECHNICIAN\",\n                                \"activeStatus\": \"ACTIVE\",\n                                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                                \"updatedAt\": \"2026-08-18T00:40:44.354Z\"\n                            }\n                        }\n                    },\n                    {\n                        \"id\": \"f1766f94-af90-4132-b293-a6b0ea010425\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                        \"title\": \"new service 3\",\n                        \"description\": \"This is check 4\",\n                        \"price\": 20,\n                        \"duration\": 30,\n                        \"rating\": 0,\n                        \"isActive\": true,\n                        \"createdAt\": \"2026-08-18T00:00:12.457Z\",\n                        \"updatedAt\": \"2026-08-18T00:00:12.457Z\",\n                        \"technician\": {\n                            \"experience\": 1,\n                            \"hourlyRate\": 20,\n                            \"user\": {\n                                \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                                \"name\": \"updated name\",\n                                \"email\": \"abc8@gamil.com\",\n                                \"role\": \"TECHNICIAN\",\n                                \"activeStatus\": \"ACTIVE\",\n                                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                                \"updatedAt\": \"2026-08-18T00:40:44.354Z\"\n                            }\n                        }\n                    },\n                    {\n                        \"id\": \"0422f238-c6f2-4e95-a735-78c86573fa62\",\n                        \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                        \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                        \"title\": \"new service 3\",\n                        \"description\": \"This is check 5\",\n                        \"price\": 20,\n                        \"duration\": 30,\n                        \"rating\": 0,\n                        \"isActive\": true,\n                        \"createdAt\": \"2026-08-18T00:39:14.087Z\",\n                        \"updatedAt\": \"2026-08-18T00:39:14.087Z\",\n                        \"technician\": {\n                            \"experience\": 1,\n                            \"hourlyRate\": 20,\n                            \"user\": {\n                                \"id\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                                \"name\": \"updated name\",\n                                \"email\": \"abc8@gamil.com\",\n                                \"role\": \"TECHNICIAN\",\n                                \"activeStatus\": \"ACTIVE\",\n                                \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                                \"updatedAt\": \"2026-08-18T00:40:44.354Z\"\n                            }\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"62739107-299e-4679-a464-fd7c056225c9\",\n                \"name\": \"Home Clean 2\",\n                \"description\": null,\n                \"icon\": null,\n                \"createdAt\": \"2026-08-09T21:29:24.279Z\",\n                \"updatedAt\": \"2026-08-09T21:29:24.279Z\",\n                \"services\": []\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Service",
+      "item": [
+        {
+          "name": "allService",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/service/all",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "service",
+                "all"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "allService",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/service/all",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "service",
+                    "all"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "4385"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1121-JDBhvv91ghUU803n/1ljyfCwcms\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:39:53 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"All the services are retrieved successfully\",\n    \"data\": {\n        \"services\": [\n            {\n                \"id\": \"0422f238-c6f2-4e95-a735-78c86573fa62\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                \"title\": \"new service 3\",\n                \"description\": \"This is check 5\",\n                \"price\": 20,\n                \"duration\": 30,\n                \"rating\": 0,\n                \"isActive\": true,\n                \"createdAt\": \"2026-08-18T00:39:14.087Z\",\n                \"updatedAt\": \"2026-08-18T00:39:14.087Z\",\n                \"category\": {\n                    \"id\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"name\": \"Home Clean\",\n                    \"description\": null,\n                    \"icon\": null,\n                    \"createdAt\": \"2026-08-09T18:15:47.895Z\",\n                    \"updatedAt\": \"2026-08-09T18:15:47.895Z\"\n                },\n                \"technician\": {\n                    \"id\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                    \"bio\": null,\n                    \"skills\": [],\n                    \"location\": null,\n                    \"experience\": 1,\n                    \"hourlyRate\": 20,\n                    \"averageRating\": 5,\n                    \"totalReviews\": 1,\n                    \"verified\": true,\n                    \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                    \"updatedAt\": \"2026-08-16T16:36:43.407Z\",\n                    \"user\": {\n                        \"name\": \"Anisul1\"\n                    }\n                }\n            },\n            {\n                \"id\": \"f1766f94-af90-4132-b293-a6b0ea010425\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                \"title\": \"new service 3\",\n                \"description\": \"This is check 4\",\n                \"price\": 20,\n                \"duration\": 30,\n                \"rating\": 0,\n                \"isActive\": true,\n                \"createdAt\": \"2026-08-18T00:00:12.457Z\",\n                \"updatedAt\": \"2026-08-18T00:00:12.457Z\",\n                \"category\": {\n                    \"id\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"name\": \"Home Clean\",\n                    \"description\": null,\n                    \"icon\": null,\n                    \"createdAt\": \"2026-08-09T18:15:47.895Z\",\n                    \"updatedAt\": \"2026-08-09T18:15:47.895Z\"\n                },\n                \"technician\": {\n                    \"id\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                    \"bio\": null,\n                    \"skills\": [],\n                    \"location\": null,\n                    \"experience\": 1,\n                    \"hourlyRate\": 20,\n                    \"averageRating\": 5,\n                    \"totalReviews\": 1,\n                    \"verified\": true,\n                    \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                    \"updatedAt\": \"2026-08-16T16:36:43.407Z\",\n                    \"user\": {\n                        \"name\": \"Anisul1\"\n                    }\n                }\n            },\n            {\n                \"id\": \"7863365a-97f6-4fb1-986f-2234f9189ef2\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                \"title\": \"new service 3\",\n                \"description\": \"This is check 3\",\n                \"price\": 20,\n                \"duration\": 30,\n                \"rating\": 0,\n                \"isActive\": true,\n                \"createdAt\": \"2026-08-11T23:08:32.674Z\",\n                \"updatedAt\": \"2026-08-11T23:08:32.674Z\",\n                \"category\": {\n                    \"id\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"name\": \"Home Clean\",\n                    \"description\": null,\n                    \"icon\": null,\n                    \"createdAt\": \"2026-08-09T18:15:47.895Z\",\n                    \"updatedAt\": \"2026-08-09T18:15:47.895Z\"\n                },\n                \"technician\": {\n                    \"id\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                    \"bio\": null,\n                    \"skills\": [],\n                    \"location\": null,\n                    \"experience\": 1,\n                    \"hourlyRate\": 20,\n                    \"averageRating\": 5,\n                    \"totalReviews\": 1,\n                    \"verified\": true,\n                    \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                    \"updatedAt\": \"2026-08-16T16:36:43.407Z\",\n                    \"user\": {\n                        \"name\": \"Anisul1\"\n                    }\n                }\n            },\n            {\n                \"id\": \"383ee03f-c600-4497-b255-dceb658d7044\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                \"title\": \"new service 2\",\n                \"description\": \"This is check\",\n                \"price\": 20,\n                \"duration\": 30,\n                \"rating\": 0,\n                \"isActive\": true,\n                \"createdAt\": \"2026-08-09T23:33:02.038Z\",\n                \"updatedAt\": \"2026-08-09T23:33:02.038Z\",\n                \"category\": {\n                    \"id\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"name\": \"Home Clean\",\n                    \"description\": null,\n                    \"icon\": null,\n                    \"createdAt\": \"2026-08-09T18:15:47.895Z\",\n                    \"updatedAt\": \"2026-08-09T18:15:47.895Z\"\n                },\n                \"technician\": {\n                    \"id\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                    \"bio\": null,\n                    \"skills\": [],\n                    \"location\": null,\n                    \"experience\": 1,\n                    \"hourlyRate\": 20,\n                    \"averageRating\": 5,\n                    \"totalReviews\": 1,\n                    \"verified\": true,\n                    \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                    \"updatedAt\": \"2026-08-16T16:36:43.407Z\",\n                    \"user\": {\n                        \"name\": \"Anisul1\"\n                    }\n                }\n            },\n            {\n                \"id\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                \"title\": \"new service\",\n                \"description\": \"This is check\",\n                \"price\": 20,\n                \"duration\": 30,\n                \"rating\": 0,\n                \"isActive\": true,\n                \"createdAt\": \"2026-08-09T23:31:29.423Z\",\n                \"updatedAt\": \"2026-08-09T23:31:29.423Z\",\n                \"category\": {\n                    \"id\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                    \"name\": \"Home Clean\",\n                    \"description\": null,\n                    \"icon\": null,\n                    \"createdAt\": \"2026-08-09T18:15:47.895Z\",\n                    \"updatedAt\": \"2026-08-09T18:15:47.895Z\"\n                },\n                \"technician\": {\n                    \"id\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                    \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                    \"bio\": null,\n                    \"skills\": [],\n                    \"location\": null,\n                    \"experience\": 1,\n                    \"hourlyRate\": 20,\n                    \"averageRating\": 5,\n                    \"totalReviews\": 1,\n                    \"verified\": true,\n                    \"createdAt\": \"2026-08-09T15:29:25.351Z\",\n                    \"updatedAt\": \"2026-08-16T16:36:43.407Z\",\n                    \"user\": {\n                        \"name\": \"Anisul1\"\n                    }\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "bookingList",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/booking/my_bookings",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "booking",
+                "my_bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "newBooking",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"serviceId\" : \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n    \"bookingDate\" : \"2026-10-11T22:00:00.000Z\",\n    \"startTime\" : \"10:00\",\n    \"address\" : \"via walter fillak\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/api/booking/new_booking",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "booking",
+                "new_booking"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "technician booking",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/booking/technician_bookings",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "booking",
+                "technician_bookings"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "technician booking",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/booking/technician_bookings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "booking",
+                    "technician_bookings"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "2346"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"92a-qx2izMqdE8tgOl8BpTAqzxtvI30\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:41:49 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Your incoming bookings are retrieved successfully\",\n    \"data\": {\n        \"bookings\": [\n            {\n                \"id\": \"e3bc889c-7275-417e-9f90-86dc19404c89\",\n                \"customerId\": \"6123cbf5-5f8c-4f0c-8b24-d988b576a0c1\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:20\",\n                \"endTime\": \"10:50\",\n                \"address\": \"via walter fillak\",\n                \"problemDescription\": null,\n                \"totalPrice\": 20,\n                \"status\": \"CANCELLED\",\n                \"createdAt\": \"2026-08-10T15:32:59.943Z\",\n                \"updatedAt\": \"2026-08-10T22:55:07.142Z\",\n                \"service\": {\n                    \"title\": \"new service\",\n                    \"duration\": 30\n                },\n                \"customer\": {\n                    \"name\": \"Anisul1\",\n                    \"email\": \"abc4@gamil.com\"\n                }\n            },\n            {\n                \"id\": \"f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3\",\n                \"customerId\": \"ca3ca428-5700-4508-ba6a-3bc1534cb586\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:00\",\n                \"endTime\": \"10:30\",\n                \"address\": \"via walter fillak\",\n                \"problemDescription\": null,\n                \"totalPrice\": 20,\n                \"status\": \"COMPLETED\",\n                \"createdAt\": \"2026-08-13T22:17:56.507Z\",\n                \"updatedAt\": \"2026-08-16T16:31:11.210Z\",\n                \"service\": {\n                    \"title\": \"new service\",\n                    \"duration\": 30\n                },\n                \"customer\": {\n                    \"name\": \"updated name\",\n                    \"email\": \"abc6@gamil.com\"\n                }\n            },\n            {\n                \"id\": \"df3cbbe5-82a6-4778-8940-f10e040fba0e\",\n                \"customerId\": \"08cec257-9d81-41e9-9ee7-5e42e1ee9277\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"10:20\",\n                \"endTime\": \"10:50\",\n                \"address\": \"via walter fillak\",\n                \"problemDescription\": null,\n                \"totalPrice\": 20,\n                \"status\": \"COMPLETED\",\n                \"createdAt\": \"2026-08-10T22:34:44.857Z\",\n                \"updatedAt\": \"2026-08-16T15:40:10.847Z\",\n                \"service\": {\n                    \"title\": \"new service\",\n                    \"duration\": 30\n                },\n                \"customer\": {\n                    \"name\": \"Anisul1\",\n                    \"email\": \"abc3@gamil.com\"\n                }\n            },\n            {\n                \"id\": \"6479e159-9fab-4e2d-b47a-6b59d62027c0\",\n                \"customerId\": \"ca3ca428-5700-4508-ba6a-3bc1534cb586\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n                \"startTime\": \"15:00\",\n                \"endTime\": \"15:30\",\n                \"address\": \"via walter fillak\",\n                \"problemDescription\": null,\n                \"totalPrice\": 20,\n                \"status\": \"PAID\",\n                \"createdAt\": \"2026-08-13T16:41:31.938Z\",\n                \"updatedAt\": \"2026-08-16T22:07:20.280Z\",\n                \"service\": {\n                    \"title\": \"new service\",\n                    \"duration\": 30\n                },\n                \"customer\": {\n                    \"name\": \"updated name\",\n                    \"email\": \"abc6@gamil.com\"\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "updateStatus",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\" : \"COMPLETED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/api/booking/f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3/status",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "booking",
+                "f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cancelBooking",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/booking/e3bc889c-7275-417e-9f90-86dc19404c89/cancel",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "booking",
+                "e3bc889c-7275-417e-9f90-86dc19404c89",
+                "cancel"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SingleBooking",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/booking/f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "booking",
+                "f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "SingleBooking",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/booking/f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "booking",
+                    "f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1049"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"419-sicltXGKl8+1/4BIdCLNaXeaUtw\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:42:10 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Booking is retrieved successfully\",\n    \"data\": {\n        \"booking\": {\n            \"id\": \"f5a269fd-b30e-4092-b0a1-c2c9bcf27ff3\",\n            \"customerId\": \"ca3ca428-5700-4508-ba6a-3bc1534cb586\",\n            \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n            \"serviceId\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n            \"bookingDate\": \"2026-10-11T22:00:00.000Z\",\n            \"startTime\": \"10:00\",\n            \"endTime\": \"10:30\",\n            \"address\": \"via walter fillak\",\n            \"problemDescription\": null,\n            \"totalPrice\": 20,\n            \"status\": \"COMPLETED\",\n            \"createdAt\": \"2026-08-13T22:17:56.507Z\",\n            \"updatedAt\": \"2026-08-16T16:31:11.210Z\",\n            \"service\": {\n                \"id\": \"b09d196f-ba62-4671-9fa2-c3680f56730f\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"categoryId\": \"4ed20d10-6253-4e06-b438-532043328f14\",\n                \"title\": \"new service\",\n                \"description\": \"This is check\",\n                \"price\": 20,\n                \"duration\": 30,\n                \"rating\": 0,\n                \"isActive\": true,\n                \"createdAt\": \"2026-08-09T23:31:29.423Z\",\n                \"updatedAt\": \"2026-08-09T23:31:29.423Z\"\n            },\n            \"technician\": {\n                \"userId\": \"88fd7883-f833-4a64-b072-6b8afda41067\",\n                \"user\": {\n                    \"name\": \"updated name\"\n                }\n            },\n            \"customer\": {\n                \"name\": \"updated name\",\n                \"email\": \"abc6@gamil.com\"\n            }\n        }\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "payments",
+      "item": [
+        {
+          "name": "initialization",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/payment/6479e159-9fab-4e2d-b47a-6b59d62027c0/init",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "payment",
+                "6479e159-9fab-4e2d-b47a-6b59d62027c0",
+                "init"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "paymentDetails",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/payment/6479e159-9fab-4e2d-b47a-6b59d62027c0/details",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "payment",
+                "6479e159-9fab-4e2d-b47a-6b59d62027c0",
+                "details"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "myPayments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/payment/my_payments",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "payment",
+                "my_payments"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Review",
+      "item": [
+        {
+          "name": "createReview",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rating\" : 4,\n    \"comment\" : \"The service is really good and technician is really good\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/api/review/df3cbbe5-82a6-4778-8940-f10e040fba0e",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "review",
+                "df3cbbe5-82a6-4778-8940-f10e040fba0e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "myReviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/review/my_reviews",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "review",
+                "my_reviews"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "editReview",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rating\" : 5,\n    \"comment\" : \"This is updated again\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3000/api/review/fa25cdd5-f14b-4524-93de-0e8c2901de76",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "review",
+                "fa25cdd5-f14b-4524-93de-0e8c2901de76"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reviewOfTechnician",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/review/technician/b83fa72a-7bf7-44c0-aea6-0d04090dca19",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "review",
+                "technician",
+                "b83fa72a-7bf7-44c0-aea6-0d04090dca19"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "reviewOfTechnician",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/review/technician/b83fa72a-7bf7-44c0-aea6-0d04090dca19",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "review",
+                    "technician",
+                    "b83fa72a-7bf7-44c0-aea6-0d04090dca19"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "456"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1c8-0FRVYVuz0qg58qmRk6DUEzMbTso\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:36:43 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Reviews are retrived successfully\",\n    \"data\": {\n        \"reviews\": [\n            {\n                \"id\": \"fa25cdd5-f14b-4524-93de-0e8c2901de76\",\n                \"bookingId\": \"df3cbbe5-82a6-4778-8940-f10e040fba0e\",\n                \"customerId\": \"08cec257-9d81-41e9-9ee7-5e42e1ee9277\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"rating\": 5,\n                \"comment\": \"This is updated again\",\n                \"createdAt\": \"2026-08-16T16:32:39.581Z\",\n                \"updatedAt\": \"2026-08-16T16:35:35.380Z\",\n                \"customer\": {\n                    \"name\": \"Anisul1\"\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "ReviewByService",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:3000/api/review/service/b09d196f-ba62-4671-9fa2-c3680f56730f",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "review",
+                "service",
+                "b09d196f-ba62-4671-9fa2-c3680f56730f"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "ReviewByService",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/review/service/b09d196f-ba62-4671-9fa2-c3680f56730f",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "review",
+                    "service",
+                    "b09d196f-ba62-4671-9fa2-c3680f56730f"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "http://localhost:3000"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "456"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1c8-0FRVYVuz0qg58qmRk6DUEzMbTso\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 18 Aug 2026 00:36:50 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"statusCode\": 200,\n    \"message\": \"Reviews are retrived successfully\",\n    \"data\": {\n        \"reviews\": [\n            {\n                \"id\": \"fa25cdd5-f14b-4524-93de-0e8c2901de76\",\n                \"bookingId\": \"df3cbbe5-82a6-4778-8940-f10e040fba0e\",\n                \"customerId\": \"08cec257-9d81-41e9-9ee7-5e42e1ee9277\",\n                \"technicianId\": \"b83fa72a-7bf7-44c0-aea6-0d04090dca19\",\n                \"rating\": 5,\n                \"comment\": \"This is updated again\",\n                \"createdAt\": \"2026-08-16T16:32:39.581Z\",\n                \"updatedAt\": \"2026-08-16T16:35:35.380Z\",\n                \"customer\": {\n                    \"name\": \"Anisul1\"\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Home",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-tau.vercel.app/",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-tau",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Home",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://fix-it-now-tau.vercel.app/",
+              "protocol": "https",
+              "host": [
+                "fix-it-now-tau",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Access-Control-Allow-Credentials",
+              "value": "true"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "https://fix-it-now-tau.vercel.app"
+            },
+            {
+              "key": "Age",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Length",
+              "value": "186"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 18 Aug 2026 00:33:17 GMT"
+            },
+            {
+              "key": "Etag",
+              "value": "W/\"ba-lv6xcWdJz6HFiSoHyTB2agSeIVQ\""
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "iad1::iad1::kbjgx-1787013196564-02b2e961e9a6"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Welcome to Fix It Now\",\n    \"author\": \"Anisul Haque\",\n    \"admin\": \"abc@gmail.com   pass:1234\",\n    \"technician\": \"abc{8-9}@gmail.com   pass:1234\",\n    \"customer\": \"abc{1-7}@gmail.com.   pass:1234\"\n}"
+        }
+      ]
+    }
+  ]
+}
