@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const raleway = Raleway({subsets:['latin'],variable:'--font-sans'});
 
@@ -26,7 +27,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", raleway.variable)}
     >
-      <body className="min-h-full flex flex-col justify-center items-center">{children}</body>
+      <body className="min-h-full flex flex-col justify-center items-center">
+        <Toaster position="top-center" richColors />
+        {children}
+      </body>
     </html>
   );
 }

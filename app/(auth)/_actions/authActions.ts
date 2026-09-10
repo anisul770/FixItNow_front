@@ -15,10 +15,6 @@ type RegisterResult = {
     success: boolean,
     statusCode: number,
     message: string,
-    data?: {
-        accessToken: string,
-        refreshToken: string
-    }
 }
 
 export type RegisterState = RegisterResult | null;
@@ -33,17 +29,27 @@ export const loginAction = async(initialState: LoginState, formData: FormData) =
     }
     // console.log(email,password,payload);
 
-    const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/login`,{
-        method : "POST",
-        headers : {
-            "Content-Type" : "application/json"
-        },
-        body : JSON.stringify(payload)
-    });
-    const result = await res.json();
-    console.log({res:res,result:result});
+    try {
+        const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/login`,{
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify(payload)
+        });
+        const result = await res.json();
+        console.log({status:res.status,result:result});
 
-    return result;
+        return result;
+    } catch (error) {
+        console.error("loginAction failed:", error);
+
+        return {
+            success : false,
+            statusCode : 500,
+            message : "Could not reach the server. Please try again."
+        }
+    }
 }
 
 export const registerAction = async(initialState: RegisterState, formData: FormData): Promise<RegisterState> => {
@@ -56,7 +62,7 @@ export const registerAction = async(initialState: RegisterState, formData: FormD
     }
 
     try {
-        const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`,{
+        const res = await fetch(`${process.env.BACKEND_API_URL}/api/users/register`,{
             method : "POST",
             headers : {
                 "Content-Type" : "application/json"

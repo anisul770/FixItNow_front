@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,8 +11,8 @@ import { Label } from "@/components/ui/label";
 import { registerAction } from "../_actions/authActions";
 
 const ROLES = [
-  { value: "customer", title: "I need a technician" },
-  { value: "technician", title: "I am a technician" },
+  { value: "CUSTOMER", title: "I need a technician" },
+  { value: "TECHNICIAN", title: "I am a technician" },
 ];
 
 const RegisterForm = () => {
@@ -21,6 +22,16 @@ const RegisterForm = () => {
 
   const passwordsMismatch =
     confirmPassword.length > 0 && password !== confirmPassword;
+
+  useEffect(() => {
+    if (!state) return;
+
+    if (state.success) {
+      toast.success(state.message);
+    } else {
+      toast.error(state.message);
+    }
+  }, [state]);
 
   return (
     <form action={action} className="flex flex-col gap-4">
@@ -143,19 +154,6 @@ const RegisterForm = () => {
           </Link>
         </Label>
       </div>
-
-      {state && (
-        <p
-          aria-live="polite"
-          className={`rounded-lg border px-3 py-2 text-xs ${
-            state.success
-              ? "border-primary/40 bg-primary/10 text-card-foreground"
-              : "border-destructive/40 bg-destructive/10 text-destructive"
-          }`}
-        >
-          {state.message}
-        </p>
-      )}
 
       <Button
         type="submit"

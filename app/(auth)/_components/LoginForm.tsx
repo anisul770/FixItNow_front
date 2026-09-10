@@ -5,11 +5,25 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { useActionState } from "react"
+import { useActionState, useEffect } from "react"
+import { toast } from "sonner"
 import { loginAction } from "../_actions/authActions"
 
 const LoginForm = () => {
     const [state, action, pending] = useActionState(loginAction, false);
+
+    useEffect(() => {
+        if (!state) return;
+
+        console.log("loginAction state:", state);
+
+        if (state.success) {
+            toast.success(state.message ?? "Logged in successfully.");
+        } else {
+            toast.error(state.message ?? "Login failed. Please try again.");
+        }
+    }, [state]);
+
     return (
         <form action={action} className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
