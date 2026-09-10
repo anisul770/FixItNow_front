@@ -8,7 +8,6 @@ const DashboardLayout = async ({
 
     return (
         <div>
-            auth layout 
             {children}
         </div>
     );

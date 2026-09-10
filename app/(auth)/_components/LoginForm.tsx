@@ -1,12 +1,17 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { useActionState } from "react"
+import { loginAction } from "../_actions/authActions"
 
 const LoginForm = () => {
+    const [state, action, pending] = useActionState(loginAction, false);
     return (
-        <form className="flex flex-col gap-5">
+        <form action={action} className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -35,7 +40,7 @@ const LoginForm = () => {
                     type="password"
                     autoComplete="current-password"
                     placeholder="••••••••"
-                    minLength={6}
+                    minLength={4}
                     required
                 />
             </div>
@@ -51,7 +56,9 @@ const LoginForm = () => {
             </div>
 
             <Button type="submit" size="lg" className="w-full">
-                Log in
+                {
+                    pending ? "Submitting..." : "Login"
+                }
             </Button>
         </form>
     )
