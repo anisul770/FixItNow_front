@@ -2,12 +2,12 @@
 
 
 type LoginState = {
-    success : true,
+    success: true,
     statusCode: number,
     message: string,
     data: {
-        accessToken : string,
-        refreshToken : string
+        accessToken: string,
+        refreshToken: string
     }
 }
 
@@ -19,7 +19,8 @@ type RegisterResult = {
 
 export type RegisterState = RegisterResult | null;
 
-export const loginAction = async(initialState: LoginState, formData: FormData) => {
+export const loginAction = async (prevState: LoginState, formData: FormData) => {
+    console.log(prevState);
     const email = formData.get("email");
     const password = formData.get("password");
 
@@ -27,56 +28,50 @@ export const loginAction = async(initialState: LoginState, formData: FormData) =
         email,
         password
     }
-    // console.log(email,password,payload);
-
-    try {
-        const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/login`,{
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body : JSON.stringify(payload)
-        });
-        const result = await res.json();
-        console.log({status:res.status,result:result});
-
-        return result;
-    } catch (error) {
-        console.error("loginAction failed:", error);
-
-        return {
-            success : false,
-            statusCode : 500,
-            message : "Could not reach the server. Please try again."
-        }
-    }
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    return result;
 }
 
-export const registerAction = async(initialState: RegisterState, formData: FormData): Promise<RegisterState> => {
-    const payload = {
-        name : formData.get("name"),
-        email : formData.get("email"),
-        phone : formData.get("phone"),
-        role : formData.get("role"),
-        password : formData.get("password")
+export const registerAction = async (initialState: RegisterState, formData: FormData): Promise<RegisterState> => {
+    const role = formData.get("role");
+
+    const payload: Record<string, unknown> = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        role: role,
+        password: formData.get("password")
+    }
+
+    // Technicians carry two extra fields the backend requires for their profile.
+    if (role === "TECHNICIAN") {
+        payload.experience = Number(formData.get("experience"));
+        payload.hourlyRate = Number(formData.get("hourlyRate"));
     }
 
     try {
-        const res = await fetch(`${process.env.BACKEND_API_URL}/api/users/register`,{
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json"
+        const res = await fetch(`${process.env.BACKEND_API_URL}/api/users/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
-            body : JSON.stringify(payload)
+            body: JSON.stringify(payload)
         });
         const result = await res.json();
 
         return result;
     } catch {
         return {
-            success : false,
-            statusCode : 500,
-            message : "Could not reach the server. Please try again."
+            success: false,
+            statusCode: 500,
+            message: "Could not reach the server. Please try again."
         }
     }
 }

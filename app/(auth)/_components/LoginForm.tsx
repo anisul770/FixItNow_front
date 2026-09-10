@@ -15,8 +15,6 @@ const LoginForm = () => {
     useEffect(() => {
         if (!state) return;
 
-        console.log("loginAction state:", state);
-
         if (state.success) {
             toast.success(state.message ?? "Logged in successfully.");
         } else {

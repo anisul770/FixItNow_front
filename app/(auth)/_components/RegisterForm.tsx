@@ -17,8 +17,11 @@ const ROLES = [
 
 const RegisterForm = () => {
   const [state, action, pending] = useActionState(registerAction, null);
+  const [selectedRole, setSelectedRole] = useState(ROLES[0].value);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const isTechnician = selectedRole === "TECHNICIAN";
 
   const passwordsMismatch =
     confirmPassword.length > 0 && password !== confirmPassword;
@@ -40,13 +43,14 @@ const RegisterForm = () => {
           I am signing up to
         </legend>
         <div className="mt-1.5 grid grid-cols-2 gap-2.5">
-          {ROLES.map((role, index) => (
+          {ROLES.map((role) => (
             <label key={role.value} className="cursor-pointer">
               <input
                 type="radio"
                 name="role"
                 value={role.value}
-                defaultChecked={index === 0}
+                checked={selectedRole === role.value}
+                onChange={() => setSelectedRole(role.value)}
                 className="peer sr-only"
               />
               <span className="block rounded-lg border border-input bg-background px-3 py-2 text-center text-sm text-muted-foreground transition-colors peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:font-medium peer-checked:text-card-foreground peer-focus-visible:ring-[3px] peer-focus-visible:ring-ring/50">
@@ -56,6 +60,37 @@ const RegisterForm = () => {
           ))}
         </div>
       </fieldset>
+
+      {isTechnician && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="experience">Experience (years)</Label>
+            <Input
+              id="experience"
+              name="experience"
+              type="number"
+              min={0}
+              max={60}
+              step={1}
+              placeholder="3"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="hourlyRate">Hourly rate (৳)</Label>
+            <Input
+              id="hourlyRate"
+              name="hourlyRate"
+              type="number"
+              min={0}
+              step={50}
+              placeholder="500"
+              required
+            />
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
