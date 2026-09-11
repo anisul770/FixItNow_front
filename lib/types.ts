@@ -62,6 +62,9 @@ export interface ITechnicianProfile {
   verified: boolean;
   createdAt: string;
   updatedAt: string;
+  // Included only on endpoints that expand them.
+  user?: IUserSummary;
+  services?: IService[];
 }
 
 export interface ICategory {
@@ -87,7 +90,7 @@ export interface IService {
   updatedAt: string;
   // Included only on endpoints that expand them.
   category?: ICategory;
-  technician?: ITechnicianProfile & { user?: IUserSummary };
+  technician?: ITechnicianProfile;
 }
 
 export interface ISlot {
@@ -115,10 +118,11 @@ export interface IBooking {
   status: TBookingStatus;
   createdAt: string;
   updatedAt: string;
-  // Included only on endpoints that expand them.
-  service?: IService;
-  customer?: IUserSummary;
-  technician?: ITechnicianProfile & { user?: IUserSummary };
+  // Expanded partially and inconsistently per endpoint — technician_bookings
+  // returns only { title, duration } and { name, email }.
+  service?: Partial<IService>;
+  customer?: Partial<IUserSummary>;
+  technician?: ITechnicianProfile;
 }
 
 export interface IReview {
