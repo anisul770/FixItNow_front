@@ -130,6 +130,8 @@ export interface IReview {
   comment: string;
   createdAt: string;
   updatedAt: string;
+  // Included only on endpoints that expand it.
+  customer?: { name: string };
 }
 
 export interface IPayment {
