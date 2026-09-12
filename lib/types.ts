@@ -154,7 +154,10 @@ export interface IPayment {
 /* -------------------------------------------------------------------------- */
 
 /** The trimmed user object nested inside technician/booking payloads. */
-export type IUserSummary = Pick<IUser, "id" | "name" | "email" | "role">;
+export type IUserSummary = Pick<
+  IUser,
+  "id" | "name" | "email" | "role" | "activeStatus"
+>;
 
 /**
  * `GET /api/users/me` → `data.profile`.

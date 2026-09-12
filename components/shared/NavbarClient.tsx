@@ -21,25 +21,6 @@ const DASHBOARD_BY_ROLE: Record<TUserRole, string> = {
   ADMIN: "/admin-dashboard",
 };
 
-const MENU_BY_ROLE: Record<TUserRole, INavItem[]> = {
-  CUSTOMER: [
-    { label: "My bookings", href: "/dashboard/bookings" },
-    { label: "My payments", href: "/dashboard/payments" },
-    { label: "My reviews", href: "/dashboard/reviews" },
-  ],
-  TECHNICIAN: [
-    { label: "My services", href: "/technician-dashbaord/services" },
-    { label: "My slots", href: "/technician-dashbaord/slots" },
-    { label: "Booking requests", href: "/technician-dashbaord/bookings" },
-  ],
-  ADMIN: [
-    { label: "Users", href: "/admin-dashboard/users" },
-    { label: "Bookings", href: "/admin-dashboard/bookings" },
-    { label: "Payments", href: "/admin-dashboard/payments" },
-    { label: "Categories", href: "/admin-dashboard/categories" },
-  ],
-};
-
 const getInitials = (name: string) =>
   name
     .trim()
@@ -81,7 +62,6 @@ const NavbarClient = ({ user }: INavbarClientProps) => {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const dashboardHref = user ? DASHBOARD_BY_ROLE[user.role] : null;
-  const roleLinks = user ? MENU_BY_ROLE[user.role] : [];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur">
@@ -174,15 +154,6 @@ const NavbarClient = ({ user }: INavbarClientProps) => {
                         Dashboard
                       </Link>
                     )}
-                    {roleLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="px-4 py-2 text-sm text-popover-foreground transition-colors hover:bg-muted"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
                   </div>
 
                   <form action={logout} className="border-t border-border">
@@ -276,15 +247,6 @@ const NavbarClient = ({ user }: INavbarClientProps) => {
                     Dashboard
                   </Link>
                 )}
-                {roleLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
 
                 <form action={logout}>
                   <button

@@ -90,7 +90,7 @@ export default async function AdminDashboardPage() {
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Link href="/admin-dashboard/users"><StatTile label="Total users" value={String(users.length)} /></Link>
-        <StatTile label="Technicians" value={String(technicians.length)} />
+        <Link href="/admin-dashboard/technicians"><StatTile label="Technicians" value={String(technicians.length)} /></Link>
         <StatTile label="Total bookings" value={String(bookings.length)} />
         <StatTile label="Revenue collected" value={`৳${revenue}`} />
       </section>
