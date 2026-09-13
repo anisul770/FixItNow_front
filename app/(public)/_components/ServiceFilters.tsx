@@ -6,8 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { ICategory } from "@/lib/types";
-import type { IServiceFilters } from "../_actions/getAllServices";
+import type { ICategory, IServiceFilters } from "@/lib/types";
 
 const SORT_OPTIONS = [
   { label: "Newest first", sortBy: "createdAt", sortOrder: "desc" },

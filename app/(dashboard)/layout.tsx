@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/sidebar";
 import { getCurrentUser } from "@/service/getCurrentUser";
 import DashboardSidebar from "./_components/DashboardSidebar";
+import DashboardUserMenu from "./_components/DashboardUserMenu";
 
 export default async function DashboardLayout({ children }: LayoutProps<"/">) {
   const result = await getCurrentUser();
@@ -29,6 +30,10 @@ export default async function DashboardLayout({ children }: LayoutProps<"/">) {
       <SidebarInset className="min-w-0">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b border-border bg-background/80 px-4 backdrop-blur">
           <SidebarTrigger />
+
+          <div className="ml-auto">
+            <DashboardUserMenu user={user} />
+          </div>
         </header>
 
         <main className="flex-1 px-4 py-6 sm:px-6">{children}</main>

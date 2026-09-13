@@ -1,17 +1,4 @@
-import type { IService } from "@/lib/types";
-
-/**
- * Query keys sent to /api/service/all. Filtering happens on the backend —
- * rename these here if the API expects different keys.
- */
-export interface IServiceFilters {
-  searchTerm?: string;
-  categoryId?: string;
-  minPrice?: string;
-  maxPrice?: string;
-  sortBy?: string;
-  sortOrder?: string;
-}
+import type { IService, IServiceFilters } from "@/lib/types";
 
 /**
  * GET /api/service/all → data.services

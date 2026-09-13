@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 
+import type { IServiceFilters } from "@/lib/types";
 import { getAllCategories } from "../_actions/getAllCategories";
-import {
-  getAllServices,
-  type IServiceFilters,
-} from "../_actions/getAllServices";
+import { getAllServices } from "../_actions/getAllServices";
 import ServiceCard from "../_components/ServiceCard";
 import ServiceFilters from "../_components/ServiceFilters";
 

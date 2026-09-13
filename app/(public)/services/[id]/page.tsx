@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { buttonVariants } from "@/components/ui/button";
 import type { ISlot } from "@/lib/types";
+import { getCurrentUser } from "@/service/getCurrentUser";
 import { getServiceById } from "../../_actions/getServiceById";
 import { getServiceReviews } from "../../_actions/getServiceReviews";
 import { getServiceSlots } from "../../_actions/getServiceSlots";
+import BookingForm from "../../_components/BookingForm";
 
 export async function generateMetadata(
   props: PageProps<"/services/[id]">
@@ -60,13 +63,17 @@ export default async function ServiceDetailsPage(
 ) {
   const { id } = await props.params;
 
-  const [service, slots, reviews] = await Promise.all([
+  const [service, slots, reviews, sessionResult] = await Promise.all([
     getServiceById(id),
     getServiceSlots(id),
     getServiceReviews(id),
+    getCurrentUser(),
   ]);
 
   if (!service) notFound();
+
+  const user =
+    sessionResult && "id" in sessionResult ? sessionResult : null;
 
   const technician = service.technician;
   const technicianName = technician?.user?.name;
@@ -218,6 +225,30 @@ export default async function ServiceDetailsPage(
                 ? `${openSlots.length} slot${openSlots.length === 1 ? "" : "s"} open`
                 : "No open slots right now"}
             </p>
+
+            <div className="mt-4 border-t border-border pt-4">
+              {openSlots.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  This service cannot be booked until the technician publishes
+                  new slots.
+                </p>
+              ) : user ? (
+                <BookingForm
+                  serviceId={service.id}
+                  slots={openSlots}
+                  defaultAddress={user.profile?.address ?? ""}
+                />
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <p className="text-sm text-muted-foreground">
+                    Log in to book one of these slots.
+                  </p>
+                  <Link href="/login" className={buttonVariants()}>
+                    Log in to book
+                  </Link>
+                </div>
+              )}
+            </div>
 
             {technicianName && (
               <div className="mt-4 border-t border-border pt-4">

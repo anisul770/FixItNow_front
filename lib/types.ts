@@ -186,3 +186,16 @@ export interface INavItem {
   label: string;
   href: string;
 }
+
+/**
+ * Query keys sent to /api/service/all. Filtering happens on the backend —
+ * rename these if the API expects different keys.
+ */
+export interface IServiceFilters {
+  searchTerm?: string;
+  categoryId?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  sortBy?: string;
+  sortOrder?: string;
+}

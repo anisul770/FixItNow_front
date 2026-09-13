@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -17,7 +16,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import type { INavItem, IUser, TUserRole } from "@/lib/types";
-import { logout } from "@/service/logout";
 
 const SIDEBAR_BY_ROLE: Record<TUserRole, { group: string; items: INavItem[] }> =
   {
@@ -52,9 +50,12 @@ const SIDEBAR_BY_ROLE: Record<TUserRole, { group: string; items: INavItem[] }> =
     },
   };
 
+const ACCOUNT_ITEMS: INavItem[] = [{ label: "Profile", href: "/profile" }];
+
 const BROWSE_ITEMS: INavItem[] = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
+  { label: "Technicians", href: "/technicians" },
 ];
 
 interface IDashboardSidebarProps {
@@ -100,6 +101,24 @@ const DashboardSidebar = ({ user }: IDashboardSidebarProps) => {
         </SidebarGroup>
 
         <SidebarGroup>
+          <SidebarGroupLabel>Account</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {ACCOUNT_ITEMS.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    isActive={pathname === item.href}
+                    render={<Link href={item.href} />}
+                  >
+                    {item.label}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
           <SidebarGroupLabel>Browse</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -114,24 +133,6 @@ const DashboardSidebar = ({ user }: IDashboardSidebarProps) => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
-      <SidebarFooter>
-        <div className="px-2 py-1.5">
-          <p className="truncate text-sm font-medium text-sidebar-foreground">
-            {user.name}
-          </p>
-          <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-        </div>
-
-        <form action={logout}>
-          <button
-            type="submit"
-            className="w-full rounded-lg px-2 py-2 text-left text-sm text-destructive transition-colors hover:bg-destructive/10"
-          >
-            Log out
-          </button>
-        </form>
-      </SidebarFooter>
 
       <SidebarRail />
     </Sidebar>

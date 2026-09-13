@@ -56,14 +56,14 @@ export default function RegisterPage() {
           }}
         />
 
-        <div className="relative flex items-center gap-2.5">
+        <Link href="/" className="relative flex w-fit items-center gap-2.5">
           <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
             <BoltMark className="size-5" />
           </span>
           <span className="font-heading text-lg font-semibold tracking-tight">
             FixItNow
           </span>
-        </div>
+        </Link>
 
         <div className="relative max-w-md">
           <h2 className="font-heading text-4xl leading-[1.1] font-semibold tracking-tight text-balance">
@@ -116,6 +116,13 @@ export default function RegisterPage() {
             <span className="font-heading text-lg font-semibold tracking-tight">
               FixItNow
             </span>
+          </Link>
+
+          <Link
+            href="/"
+            className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          >
+            ← Back to site
           </Link>
 
           <Card className="border-border/70 shadow-xl shadow-black/[0.03]">
