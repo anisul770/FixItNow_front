@@ -60,7 +60,11 @@ export default async function AdminUsersPage() {
           </p>
         </div>
       ) : (
-        <UsersTable users={sortedUsers} />
+        <UsersTable
+          users={sortedUsers}
+          showActions
+          currentUserId={currentUser.id}
+        />
       )}
     </div>
   );

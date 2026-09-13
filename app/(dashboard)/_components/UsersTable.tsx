@@ -1,5 +1,7 @@
 import type { IUser } from "@/lib/types";
 
+import UserStatusActions from "./UserStatusActions";
+
 const formatDate = (value: string) =>
   new Date(value).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -12,9 +14,17 @@ const toTitleCase = (value: string) =>
 
 interface IUsersTableProps {
   users: IUser[];
+  /** Adds a block/unblock column — off on the dashboard preview. */
+  showActions?: boolean;
+  /** The signed-in admin, so their own row cannot be blocked. */
+  currentUserId?: string;
 }
 
-const UsersTable = ({ users }: IUsersTableProps) => {
+const UsersTable = ({
+  users,
+  showActions,
+  currentUserId,
+}: IUsersTableProps) => {
   return (
     <div className="overflow-x-auto rounded-xl border border-border bg-card">
       <table className="w-full text-sm">
@@ -25,6 +35,11 @@ const UsersTable = ({ users }: IUsersTableProps) => {
             <th className="px-4 py-3 font-medium">Role</th>
             <th className="px-4 py-3 font-medium">Status</th>
             <th className="px-4 py-3 font-medium">Joined</th>
+            {showActions && (
+              <th className="px-4 py-3 text-right font-medium">
+                <span className="sr-only">Actions</span>
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -55,6 +70,15 @@ const UsersTable = ({ users }: IUsersTableProps) => {
               <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
                 {formatDate(user.createdAt)}
               </td>
+              {showActions && (
+                <td className="px-4 py-3 text-right">
+                  <UserStatusActions
+                    userId={user.id}
+                    blocked={user.activeStatus === "BLOCKED"}
+                    isSelf={user.id === currentUserId}
+                  />
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

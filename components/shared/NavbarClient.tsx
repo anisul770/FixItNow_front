@@ -154,6 +154,28 @@ const NavbarClient = ({ user }: INavbarClientProps) => {
                         Dashboard
                       </Link>
                     )}
+                    <Link
+                      href="/profile"
+                      className="px-4 py-2 text-sm text-popover-foreground transition-colors hover:bg-muted"
+                    >
+                      Profile
+                    </Link>
+                    {user.role === "CUSTOMER" && (
+                      <>
+                        <Link
+                          href="/dashboard/bookings"
+                          className="px-4 py-2 text-sm text-popover-foreground transition-colors hover:bg-muted"
+                        >
+                          My bookings
+                        </Link>
+                        <Link
+                          href="/dashboard/reviews"
+                          className="px-4 py-2 text-sm text-popover-foreground transition-colors hover:bg-muted"
+                        >
+                          My reviews
+                        </Link>
+                      </>
+                    )}
                   </div>
 
                   <form action={logout} className="border-t border-border">
@@ -246,6 +268,28 @@ const NavbarClient = ({ user }: INavbarClientProps) => {
                   >
                     Dashboard
                   </Link>
+                )}
+                <Link
+                  href="/profile"
+                  className="rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  Profile
+                </Link>
+                {user.role === "CUSTOMER" && (
+                  <>
+                    <Link
+                      href="/dashboard/bookings"
+                      className="rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      My bookings
+                    </Link>
+                    <Link
+                      href="/dashboard/reviews"
+                      className="rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      My reviews
+                    </Link>
+                  </>
                 )}
 
                 <form action={logout}>
