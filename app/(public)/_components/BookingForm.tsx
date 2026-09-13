@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -13,25 +13,17 @@ import { createBooking } from "../_actions/createBooking";
 const SELECT_CLASSES =
   "h-9 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";
 
-/**
- * A slot fixes a time of day, not a date — the same 10:00–10:50 window can be
- * published on several dates, so the dropdown lists each window once.
- */
-const distinctTimes = (slots: ISlot[]) => {
-  const seen = new Map<string, ISlot>();
-
-  for (const slot of slots) {
-    const key = `${slot.startTime}-${slot.endTime}`;
-    if (!seen.has(key)) seen.set(key, slot);
-  }
-
-  return [...seen.values()].sort((a, b) =>
-    a.startTime.localeCompare(b.startTime)
-  );
-};
+const formatDate = (value: string) =>
+  new Date(value).toLocaleDateString("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
 interface IBookingFormProps {
   serviceId: string;
+  /** Open slots only — a booking must land on one the technician published. */
   slots: ISlot[];
   defaultAddress: string;
 }
@@ -44,8 +36,18 @@ const BookingForm = ({
   const router = useRouter();
   const [state, action, pending] = useActionState(createBooking, null);
 
-  const times = distinctTimes(slots);
-  const today = new Date().toISOString().slice(0, 10);
+  // Dates the technician actually has open slots on, earliest first.
+  const dates = [...new Set(slots.map((slot) => slot.date))].sort(
+    (a, b) => new Date(a).getTime() - new Date(b).getTime()
+  );
+
+  const [selectedDate, setSelectedDate] = useState(dates[0] ?? "");
+
+  // Only the times published on the chosen date — any other pairing is a
+  // slot the technician never opened, which the API rejects.
+  const timesOnDate = slots
+    .filter((slot) => slot.date === selectedDate)
+    .sort((a, b) => a.startTime.localeCompare(b.startTime));
 
   useEffect(() => {
     if (!state) return;
@@ -64,30 +66,40 @@ const BookingForm = ({
 
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="bookingDate">Date</Label>
-        <Input
+        <select
           id="bookingDate"
           name="bookingDate"
-          type="date"
-          min={today}
-          defaultValue={today}
+          className={SELECT_CLASSES}
+          value={selectedDate}
+          onChange={(event) => setSelectedDate(event.target.value)}
           required
-        />
+        >
+          {dates.map((date) => (
+            <option key={date} value={date}>
+              {formatDate(date)}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="startTime">Time slot</Label>
+        <Label htmlFor="startTime">Time</Label>
         <select
           id="startTime"
           name="startTime"
           className={SELECT_CLASSES}
           required
         >
-          {times.map((slot) => (
+          {timesOnDate.map((slot) => (
             <option key={slot.id} value={slot.startTime}>
               {slot.startTime} – {slot.endTime}
             </option>
           ))}
         </select>
+        <p className="text-xs text-muted-foreground">
+          {timesOnDate.length} slot{timesOnDate.length === 1 ? "" : "s"} open on
+          this date.
+        </p>
       </div>
 
       <div className="flex flex-col gap-1.5">

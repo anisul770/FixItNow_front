@@ -8,8 +8,9 @@ export type TBookingState = { success: boolean; message: string } | null;
 /**
  * POST /api/booking/new_booking with { serviceId, bookingDate, startTime, address }.
  *
- * A slot only fixes the time of day — the backend does not pin it to the slot's
- * own date — so the customer picks the date and the slot supplies the time.
+ * The date and time must match a slot the technician actually published —
+ * anything else is refused with "technician is not available at that time" —
+ * so both values come straight off the chosen slot.
  */
 export const createBooking = async (
   prevState: TBookingState,
@@ -39,11 +40,9 @@ export const createBooking = async (
     return { success: false, message: "Please add the service address." };
   }
 
-  // The date input gives "2026-10-11"; pin it to UTC midnight so the stored
-  // date cannot drift a day either way with the server's timezone.
-  const bookingDate = new Date(`${chosenDate}T00:00:00.000Z`);
-
-  if (Number.isNaN(bookingDate.getTime())) {
+  // chosenDate is the slot's own ISO date, forwarded untouched so it matches
+  // the stored slot exactly — reformatting it here is what breaks the match.
+  if (Number.isNaN(new Date(chosenDate).getTime())) {
     return { success: false, message: "That date is not valid." };
   }
 
@@ -58,7 +57,7 @@ export const createBooking = async (
         },
         body: JSON.stringify({
           serviceId,
-          bookingDate: bookingDate.toISOString(),
+          bookingDate: chosenDate,
           startTime,
           address,
         }),
