@@ -8,6 +8,7 @@ import { getAllTechnicians } from "../../../_actions/technician/getAllTechnician
 import { getBookingById } from "../../../_actions/user/getBookingById";
 import { getPaymentDetails } from "../../../_actions/user/getPaymentDetails";
 import PayButton from "../../../_components/PayButton";
+import ReviewForm from "../../../_components/ReviewForm";
 import {
   BOOKING_STATUS_UI,
   PAYMENT_STATUS_UI,
@@ -72,6 +73,12 @@ export default async function BookingDetailsPage(
 
   const statusUi = BOOKING_STATUS_UI[booking.status];
   const paymentUi = payment ? PAYMENT_STATUS_UI[payment.status] : null;
+
+  // A job can only be reviewed once it is done, and only once.
+  const existingReview = user.customerReviews?.find(
+    (review) => review.bookingId === booking.id
+  );
+  const canReview = booking.status === "COMPLETED";
 
   return (
     <div className="flex flex-col gap-6">
@@ -179,6 +186,29 @@ export default async function BookingDetailsPage(
             ) : (
               <p className="mt-2 text-sm text-muted-foreground">
                 No payment started for this booking yet.
+              </p>
+            )}
+          </section>
+
+          <section>
+            <h2 className="font-heading text-lg font-semibold tracking-tight">
+              {existingReview ? "Your review" : "Leave a review"}
+            </h2>
+
+            {canReview ? (
+              <div className="mt-3 rounded-xl border border-border bg-card p-5">
+                {existingReview && (
+                  <p className="mb-4 text-xs text-muted-foreground">
+                    You reviewed this job on {formatDate(existingReview.createdAt)}
+                    . Editing replaces what you wrote.
+                  </p>
+                )}
+
+                <ReviewForm bookingId={booking.id} review={existingReview} />
+              </div>
+            ) : (
+              <p className="mt-2 text-sm text-muted-foreground">
+                You can review this job once the technician marks it complete.
               </p>
             )}
           </section>

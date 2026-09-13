@@ -23,9 +23,19 @@ export default async function DashboardLayout({ children }: LayoutProps<"/">) {
     );
   }
 
+  // Completed jobs with no review yet — badged in the sidebar so the prompt
+  // follows the customer across every dashboard page.
+  const reviewedBookingIds = new Set(
+    (user.customerReviews ?? []).map((review) => review.bookingId)
+  );
+  const pendingReviews = (user.customerBookings ?? []).filter(
+    (booking) =>
+      booking.status === "COMPLETED" && !reviewedBookingIds.has(booking.id)
+  ).length;
+
   return (
     <SidebarProvider>
-      <DashboardSidebar user={user} />
+      <DashboardSidebar user={user} pendingReviews={pendingReviews} />
 
       <SidebarInset className="min-w-0">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b border-border bg-background/80 px-4 backdrop-blur">

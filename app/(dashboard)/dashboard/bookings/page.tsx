@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { buttonVariants } from "@/components/ui/button";
 import { getCurrentUser } from "@/service/getCurrentUser";
+import ReviewPrompt from "../../_components/ReviewPrompt";
 import { BOOKING_STATUS_UI, TONE_CLASSES } from "../../_config/payment";
 
 export const metadata: Metadata = {
@@ -28,6 +29,10 @@ export default async function BookingsPage() {
 
   const bookings = [...(user.customerBookings ?? [])].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  const reviewedIds = new Set(
+    (user.customerReviews ?? []).map((review) => review.bookingId)
   );
 
   return (
@@ -62,39 +67,54 @@ export default async function BookingsPage() {
         <ul className="flex flex-col gap-3">
           {bookings.map((booking) => {
             const ui = BOOKING_STATUS_UI[booking.status];
+            const needsReview =
+              booking.status === "COMPLETED" && !reviewedIds.has(booking.id);
 
             return (
-              <li key={booking.id}>
-                <Link
-                  href={`/dashboard/bookings/${booking.id}`}
-                  className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/50 hover:bg-muted"
-                >
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-card-foreground">
-                      {booking.service?.title ?? "Service"}
-                    </p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      {formatDate(booking.bookingDate)} · {booking.startTime} –{" "}
-                      {booking.endTime}
-                    </p>
-                    <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                      {booking.address}
-                    </p>
-                  </div>
+              <li
+                key={booking.id}
+                className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-card p-4"
+              >
+                <div className="min-w-0">
+                  <Link
+                    href={`/dashboard/bookings/${booking.id}`}
+                    className="truncate text-sm font-medium text-card-foreground underline-offset-4 hover:underline"
+                  >
+                    {booking.service?.title ?? "Service"}
+                  </Link>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {formatDate(booking.bookingDate)} · {booking.startTime} –{" "}
+                    {booking.endTime}
+                  </p>
+                  <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                    {booking.address}
+                  </p>
+                </div>
 
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${
-                        ui ? TONE_CLASSES[ui.tone] : TONE_CLASSES.neutral
-                      }`}
-                    >
-                      {ui?.label ?? booking.status}
-                    </span>
-                    <span className="text-sm font-medium tabular-nums text-card-foreground">
-                      ৳{booking.totalPrice}
-                    </span>
-                  </div>
-                </Link>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span
+                    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${
+                      ui ? TONE_CLASSES[ui.tone] : TONE_CLASSES.neutral
+                    }`}
+                  >
+                    {ui?.label ?? booking.status}
+                  </span>
+                  <span className="text-sm font-medium tabular-nums text-card-foreground">
+                    ৳{booking.totalPrice}
+                  </span>
+
+                  <Link
+                    href={`/dashboard/bookings/${booking.id}`}
+                    className={buttonVariants({
+                      variant: "ghost",
+                      size: "sm",
+                    })}
+                  >
+                    Details
+                  </Link>
+
+                  {needsReview && <ReviewPrompt bookingId={booking.id} />}
+                </div>
               </li>
             );
           })}

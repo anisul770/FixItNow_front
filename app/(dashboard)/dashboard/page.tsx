@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import type { IBooking, IBookingStatus } from "@/lib/types";
 import { getCurrentUser } from "@/service/getCurrentUser";
 import PayButton from "../_components/PayButton";
+import ReviewPrompt from "../_components/ReviewPrompt";
 import {
   BOOKING_STATUS_UI,
   TONE_CLASSES,
@@ -84,6 +85,13 @@ export default async function DashboardPage() {
     )
     .slice(0, 5);
 
+  // Completed jobs the customer has not rated yet.
+  const reviewedIds = new Set(reviews.map((review) => review.bookingId));
+  const awaitingReview = bookings.filter(
+    (booking) =>
+      booking.status === "COMPLETED" && !reviewedIds.has(booking.id)
+  );
+
   return (
     <div className="flex flex-col gap-8">
       <header className="flex flex-wrap items-end justify-between gap-4">
@@ -109,6 +117,31 @@ export default async function DashboardPage() {
           <StatTile label="Total spent" value={`৳${totalSpent}`} />
         </Link>
       </section>
+
+      {awaitingReview.length > 0 && (
+        <section className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-primary/40 bg-primary/5 p-5">
+          <div className="flex items-center gap-3">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className="size-5">
+                <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z" />
+              </svg>
+            </span>
+            <div>
+              <p className="font-heading text-base font-medium text-foreground">
+                How did it go?
+              </p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                {awaitingReview.length} completed job
+                {awaitingReview.length === 1 ? "" : "s"} waiting for your rating.
+              </p>
+            </div>
+          </div>
+
+          <Link href="/dashboard/reviews" className={buttonVariants()}>
+            Rate {awaitingReview.length === 1 ? "it" : "them"}
+          </Link>
+        </section>
+      )}
 
       <section>
         <div className="flex items-center justify-between gap-3">
@@ -182,6 +215,13 @@ export default async function DashboardPage() {
                             amount={booking.totalPrice}
                           />
                         )}
+                        {booking.status === "COMPLETED" &&
+                          !reviewedIds.has(booking.id) && (
+                            <ReviewPrompt
+                              bookingId={booking.id}
+                              label="Review"
+                            />
+                          )}
                         <Link
                           href={`/dashboard/bookings/${booking.id}`}
                           className={buttonVariants({

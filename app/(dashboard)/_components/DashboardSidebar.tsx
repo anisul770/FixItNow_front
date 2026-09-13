@@ -11,6 +11,7 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
@@ -60,9 +61,14 @@ const BROWSE_ITEMS: INavItem[] = [
 
 interface IDashboardSidebarProps {
   user: IUser;
+  /** Completed jobs the customer has not rated — badged on My reviews. */
+  pendingReviews?: number;
 }
 
-const DashboardSidebar = ({ user }: IDashboardSidebarProps) => {
+const DashboardSidebar = ({
+  user,
+  pendingReviews = 0,
+}: IDashboardSidebarProps) => {
   const pathname = usePathname();
   const { group, items } = SIDEBAR_BY_ROLE[user.role];
 
@@ -94,6 +100,10 @@ const DashboardSidebar = ({ user }: IDashboardSidebarProps) => {
                   >
                     {item.label}
                   </SidebarMenuButton>
+
+                  {item.href === "/dashboard/reviews" && pendingReviews > 0 && (
+                    <SidebarMenuBadge>{pendingReviews}</SidebarMenuBadge>
+                  )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
