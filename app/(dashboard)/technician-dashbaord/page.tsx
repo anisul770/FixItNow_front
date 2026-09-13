@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import type { TBookingStatus } from "@/lib/types";
+import type { IBookingStatus } from "@/lib/types";
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getMySlots } from "../_actions/getMySlots";
-import { getTechnicianBookings } from "../_actions/getTechnicianBookings";
-import { getTechnicianProfile } from "../_actions/getTechnicianProfile";
+import { BOOKING_STATUS_UI, TONE_CLASSES } from "../_config/payment";
+import { getMySlots } from "../_actions/technician/getMySlots";
+import { getTechnicianBookings } from "../_actions/technician/getTechnicianBookings";
+import { getTechnicianProfile } from "../_actions/technician/getTechnicianProfile";
 
 export const metadata: Metadata = {
   title: "Technician dashboard | FixItNow",
   description: "Your incoming jobs, services, slots and earnings.",
-};
-
-const STATUS_STYLES: Record<TBookingStatus, string> = {
-  PENDING: "bg-muted text-muted-foreground",
-  ACCEPTED: "bg-primary/15 text-foreground",
-  COMPLETED: "bg-chart-3/15 text-foreground",
-  PAID: "bg-chart-3/15 text-foreground",
-  CANCELLED: "bg-destructive/10 text-destructive",
 };
 
 const formatDate = (value: string) =>
@@ -36,13 +29,19 @@ const StatTile = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-const StatusBadge = ({ status }: { status: TBookingStatus }) => (
-  <span
-    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[status] ?? "bg-muted text-muted-foreground"}`}
-  >
-    {status.charAt(0) + status.slice(1).toLowerCase()}
-  </span>
-);
+const StatusBadge = ({ status }: { status: IBookingStatus }) => {
+  const ui = BOOKING_STATUS_UI[status];
+
+  return (
+    <span
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${
+        ui ? TONE_CLASSES[ui.tone] : TONE_CLASSES.neutral
+      }`}
+    >
+      {ui?.label ?? status}
+    </span>
+  );
+};
 
 export default async function TechnicianDashboardPage() {
   const result = await getCurrentUser();
@@ -60,9 +59,13 @@ export default async function TechnicianDashboardPage() {
   ]);
 
   const services = profile?.services ?? [];
-  const pending = bookings.filter((booking) => booking.status === "PENDING");
+  // A new booking arrives as REQUESTED and waits for the technician.
+  const pending = bookings.filter((booking) => booking.status === "REQUESTED");
   const settled = bookings.filter(
-    (booking) => booking.status === "COMPLETED" || booking.status === "PAID"
+    (booking) =>
+      booking.status === "PAID" ||
+      booking.status === "IN_PROGRESS" ||
+      booking.status === "COMPLETED"
   );
   const earned = settled.reduce((sum, booking) => sum + booking.totalPrice, 0);
   const openSlots = slots.filter((slot) => !slot.isBooked);

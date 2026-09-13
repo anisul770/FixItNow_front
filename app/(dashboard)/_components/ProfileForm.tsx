@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { IUser } from "@/lib/types";
-import { updateProfile } from "../_actions/updateProfile";
+import { updateProfile } from "../_actions/user/updateProfile";
 
 interface IProfileFormProps {
   user: IUser;

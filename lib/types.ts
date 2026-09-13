@@ -9,14 +9,23 @@ export type TUserRole = "CUSTOMER" | "TECHNICIAN" | "ADMIN";
 
 export type TActiveStatus = "ACTIVE" | "BLOCKED";
 
-export type TBookingStatus =
-  | "PENDING"
+// Mirrors prisma/schema/enums.prisma.
+export type IBookingStatus =
+  | "REQUESTED"
   | "ACCEPTED"
-  | "CANCELLED"
+  | "DECLINED"
+  | "PAID"
+  | "IN_PROGRESS"
   | "COMPLETED"
-  | "PAID";
+  | "CANCELLED";
 
-export type TPaymentStatus = "PENDING" | "PAID" | "FAILED";
+export type IPaymentStatus =
+  | "PENDING"
+  | "COMPLETED"
+  | "FAILED"
+  | "REFUNDED";
+
+export type IPaymentProvider = "SSLCOMMERZ" | "STRIPE";
 
 /* -------------------------------------------------------------------------- */
 /*                                API envelope                                */
@@ -115,14 +124,15 @@ export interface IBooking {
   address: string;
   problemDescription: string | null;
   totalPrice: number;
-  status: TBookingStatus;
+  status: IBookingStatus;
   createdAt: string;
   updatedAt: string;
   // Expanded partially and inconsistently per endpoint — technician_bookings
   // returns only { title, duration } and { name, email }.
   service?: Partial<IService>;
   customer?: Partial<IUserSummary>;
-  technician?: ITechnicianProfile;
+  // GET /api/booking/:id nests only { userId, user: { name } }.
+  technician?: Partial<ITechnicianProfile>;
 }
 
 export interface IReview {
@@ -138,15 +148,48 @@ export interface IReview {
   customer?: { name: string };
 }
 
+/**
+ * One payment row. `bookingId` is unique, so this is the single source of
+ * truth for whether a booking has been paid for.
+ *
+ * The four settlement fields are written only by successPayment, so anything
+ * that is not COMPLETED carries them as null.
+ */
 export interface IPayment {
   id: string;
   bookingId: string;
+  provider: IPaymentProvider;
   amount: number;
-  status: TPaymentStatus;
+  status: IPaymentStatus;
+  paymentIntentId: string | null;
   transactionId: string | null;
+  method: string | null;
+  methodType: string | null;
+  paidAt: string | null;
   createdAt: string;
   updatedAt: string;
-  booking?: IBooking;
+}
+
+/** GET /api/payment/my_payments → data.payments — slim booking nesting. */
+export interface IPaymentListItem extends IPayment {
+  booking: { bookingDate: string; service: { title: string } };
+}
+
+/** GET /api/payment/:bookingId/details and /api/admin/payments → full nesting. */
+export interface IPaymentDetails extends IPayment {
+  booking: {
+    id: string;
+    customerId: string;
+    bookingDate: string;
+    startTime: string;
+    endTime: string;
+    address: string;
+    totalPrice: number;
+    status: IBookingStatus;
+    service: { title: string };
+    customer: { name: string; email: string };
+    technician: { user: { name: string } };
+  };
 }
 
 /* -------------------------------------------------------------------------- */

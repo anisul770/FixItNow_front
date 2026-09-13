@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import type { IServiceFilters } from "@/lib/types";
-import { getAllCategories } from "../_actions/getAllCategories";
+import { getCategories } from "@/service/getCategories";
 import { getAllServices } from "../_actions/getAllServices";
 import ServiceCard from "../_components/ServiceCard";
 import ServiceFilters from "../_components/ServiceFilters";
@@ -31,7 +31,7 @@ export default async function ServicesPage(props: PageProps<"/services">) {
 
   const [services, categories] = await Promise.all([
     getAllServices(filters),
-    getAllCategories(),
+    getCategories(),
   ]);
 
   return (

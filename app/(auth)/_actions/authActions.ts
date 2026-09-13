@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
@@ -52,6 +53,11 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
             maxAge : 60*60*24*7,
             sameSite : "lax"
         })
+
+        // Every page renders the navbar from the session, so the whole tree's
+        // cached output is stale the moment the session changes.
+        revalidatePath("/", "layout");
+
         redirect("/");
     }
 

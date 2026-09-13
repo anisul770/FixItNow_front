@@ -3,20 +3,18 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { buttonVariants } from "@/components/ui/button";
-import type { IBooking, TBookingStatus } from "@/lib/types";
+import type { IBooking, IBookingStatus } from "@/lib/types";
 import { getCurrentUser } from "@/service/getCurrentUser";
+import PayButton from "../_components/PayButton";
+import {
+  BOOKING_STATUS_UI,
+  TONE_CLASSES,
+  canPayBooking,
+} from "../_config/payment";
 
 export const metadata: Metadata = {
   title: "Dashboard | FixItNow",
   description: "Your bookings, spending and reviews at a glance.",
-};
-
-const STATUS_STYLES: Record<TBookingStatus, string> = {
-  PENDING: "bg-muted text-muted-foreground",
-  ACCEPTED: "bg-primary/15 text-foreground",
-  COMPLETED: "bg-chart-3/15 text-foreground",
-  PAID: "bg-chart-3/15 text-foreground",
-  CANCELLED: "bg-destructive/10 text-destructive",
 };
 
 const formatDate = (value: string) =>
@@ -35,13 +33,19 @@ const StatTile = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-const StatusBadge = ({ status }: { status: TBookingStatus }) => (
-  <span
-    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[status] ?? "bg-muted text-muted-foreground"}`}
-  >
-    {status.charAt(0) + status.slice(1).toLowerCase()}
-  </span>
-);
+const StatusBadge = ({ status }: { status: IBookingStatus }) => {
+  const ui = BOOKING_STATUS_UI[status];
+
+  return (
+    <span
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${
+        ui ? TONE_CLASSES[ui.tone] : TONE_CLASSES.neutral
+      }`}
+    >
+      {ui?.label ?? status}
+    </span>
+  );
+};
 
 export default async function DashboardPage() {
   const result = await getCurrentUser();
@@ -54,11 +58,19 @@ export default async function DashboardPage() {
   const bookings: IBooking[] = user.customerBookings ?? [];
   const reviews = user.customerReviews ?? [];
 
+  // Money is committed once the booking reaches PAID; it stays counted
+  // through IN_PROGRESS and COMPLETED.
   const settled = bookings.filter(
-    (booking) => booking.status === "COMPLETED" || booking.status === "PAID"
+    (booking) =>
+      booking.status === "PAID" ||
+      booking.status === "IN_PROGRESS" ||
+      booking.status === "COMPLETED"
   );
   const active = bookings.filter(
-    (booking) => booking.status === "PENDING" || booking.status === "ACCEPTED"
+    (booking) =>
+      booking.status === "REQUESTED" ||
+      booking.status === "ACCEPTED" ||
+      booking.status === "IN_PROGRESS"
   );
   const totalSpent = settled.reduce(
     (sum, booking) => sum + booking.totalPrice,
@@ -93,7 +105,9 @@ export default async function DashboardPage() {
         <StatTile label="Total bookings" value={String(bookings.length)} />
         <StatTile label="In progress" value={String(active.length)} />
         <StatTile label="Completed" value={String(settled.length)} />
-        <StatTile label="Total spent" value={`৳${totalSpent}`} />
+        <Link href="/dashboard/payments">
+          <StatTile label="Total spent" value={`৳${totalSpent}`} />
+        </Link>
       </section>
 
       <section>
@@ -133,6 +147,9 @@ export default async function DashboardPage() {
                   <th className="px-4 py-3 font-medium">Address</th>
                   <th className="px-4 py-3 font-medium">Status</th>
                   <th className="px-4 py-3 text-right font-medium">Price</th>
+                  <th className="px-4 py-3 text-right font-medium">
+                    <span className="sr-only">Actions</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -155,6 +172,26 @@ export default async function DashboardPage() {
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums text-card-foreground">
                       ৳{booking.totalPrice}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-2">
+                        {/* /init only accepts an ACCEPTED, unpaid booking. */}
+                        {canPayBooking(booking.status) && (
+                          <PayButton
+                            bookingId={booking.id}
+                            amount={booking.totalPrice}
+                          />
+                        )}
+                        <Link
+                          href={`/dashboard/bookings/${booking.id}`}
+                          className={buttonVariants({
+                            variant: "ghost",
+                            size: "sm",
+                          })}
+                        >
+                          Details
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}

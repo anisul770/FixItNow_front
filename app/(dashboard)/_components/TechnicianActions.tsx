@@ -4,8 +4,8 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { updateUserStatus } from "../_actions/updateUserStatus";
-import { verifyTechnician } from "../_actions/verifyTechnician";
+import { updateUserStatus } from "../_actions/admin/updateUserStatus";
+import { verifyTechnician } from "../_actions/admin/verifyTechnician";
 
 interface ITechnicianActionsProps {
   /** Technician profile id — what verify_technician expects. */

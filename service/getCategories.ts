@@ -1,7 +1,10 @@
 import type { ICategory } from "@/lib/types";
 
-/** GET /api/category/all → data.categories */
-export const getAllCategories = async (): Promise<ICategory[]> => {
+/**
+ * GET /api/category/all → data.categories.
+ * Public read, used by both the service browser and the technician module.
+ */
+export const getCategories = async (): Promise<ICategory[]> => {
   try {
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/category/all`, {
       next: {

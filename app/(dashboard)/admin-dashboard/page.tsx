@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import type { TBookingStatus } from "@/lib/types";
+import type { IBookingStatus } from "@/lib/types";
+import { BOOKING_STATUS_UI, TONE_CLASSES } from "../_config/payment";
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getAllBookings } from "../_actions/getAllBookings";
-import { getAllPayments } from "../_actions/getAllPayments";
-import { getAllUsers } from "../_actions/getAllUsers";
+import { getAllBookings } from "../_actions/admin/getAllBookings";
+import { getAllPayments } from "../_actions/admin/getAllPayments";
+import { getAllUsers } from "../_actions/admin/getAllUsers";
 import UsersTable from "../_components/UsersTable";
 
 export const metadata: Metadata = {
@@ -14,24 +15,15 @@ export const metadata: Metadata = {
   description: "Platform users, bookings and payments at a glance.",
 };
 
-const BOOKING_STATUSES: TBookingStatus[] = [
-  "PENDING",
+const BOOKING_STATUSES: IBookingStatus[] = [
+  "REQUESTED",
   "ACCEPTED",
-  "COMPLETED",
+  "DECLINED",
   "PAID",
+  "IN_PROGRESS",
+  "COMPLETED",
   "CANCELLED",
 ];
-
-const STATUS_STYLES: Record<TBookingStatus, string> = {
-  PENDING: "bg-muted text-muted-foreground",
-  ACCEPTED: "bg-primary/15 text-foreground",
-  COMPLETED: "bg-chart-3/15 text-foreground",
-  PAID: "bg-chart-3/15 text-foreground",
-  CANCELLED: "bg-destructive/10 text-destructive",
-};
-
-const toTitleCase = (value: string) =>
-  value.charAt(0) + value.slice(1).toLowerCase();
 
 const StatTile = ({ label, value }: { label: string; value: string }) => (
   <div className="rounded-xl border border-border bg-card p-4">
@@ -61,8 +53,9 @@ export default async function AdminDashboardPage() {
   const customers = users.filter((item) => item.role === "CUSTOMER");
   const blocked = users.filter((item) => item.activeStatus === "BLOCKED");
 
+  // Only COMPLETED payments have actually settled.
   const revenue = payments
-    .filter((payment) => payment.status === "PAID")
+    .filter((payment) => payment.status === "COMPLETED")
     .reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
 
   const statusCounts = BOOKING_STATUSES.map((status) => ({
@@ -113,9 +106,9 @@ export default async function AdminDashboardPage() {
                   className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3"
                 >
                   <span
-                    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[status]}`}
+                    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${TONE_CLASSES[BOOKING_STATUS_UI[status].tone]}`}
                   >
-                    {toTitleCase(status)}
+                    {BOOKING_STATUS_UI[status].label}
                   </span>
                   <span className="font-heading text-lg font-semibold tabular-nums text-card-foreground">
                     {count}

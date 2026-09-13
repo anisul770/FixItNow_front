@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
-import { getAllCategories } from "./_actions/getAllCategories";
+import { getCategories } from "@/service/getCategories";
 import { getAllServices } from "./_actions/getAllServices";
 import ServiceCard from "./_components/ServiceCard";
 
@@ -26,7 +26,7 @@ const STEPS = [
 export default async function HomePage() {
   const [services, categories] = await Promise.all([
     getAllServices(),
-    getAllCategories(),
+    getCategories(),
   ]);
 
   const featured = services.slice(0, 6);

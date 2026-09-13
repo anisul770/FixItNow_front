@@ -4,10 +4,13 @@ import { cookies } from "next/headers";
  * Fetches a protected endpoint with the accessToken cookie attached and
  * unwraps `data`. Returns null on a missing session or any failure, so each
  * caller can fall back to its own empty state.
+ *
+ * Never cached: every response here is specific to the signed-in user, and a
+ * dashboard showing another request's data — or data from before a mutation —
+ * is worse than the round trip it saves.
  */
 export const authorizedFetch = async <TData>(
-  path: string,
-  tags: string[]
+  path: string
 ): Promise<TData | null> => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
@@ -19,10 +22,7 @@ export const authorizedFetch = async <TData>(
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      next: {
-        revalidate: 60,
-        tags,
-      },
+      cache: "no-store",
     });
 
     if (!res.ok) return null;

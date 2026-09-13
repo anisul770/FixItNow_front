@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getAllUsers } from "../../_actions/getAllUsers";
+import { getAllUsers } from "../../_actions/admin/getAllUsers";
 import UsersTable from "../../_components/UsersTable";
 
 export const metadata: Metadata = {

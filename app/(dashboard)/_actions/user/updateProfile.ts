@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export type TProfileState = { success: boolean; message: string } | null;
@@ -38,11 +37,7 @@ export const updateProfile = async (
 
     const result = await res.json();
 
-    if (result?.success) {
-      revalidateTag("my-profile", {
-        expire: 0,
-      });
-    }
+    console.log("updateProfile:", res.status, result);
 
     return {
       success: Boolean(result?.success),

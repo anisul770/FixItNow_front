@@ -7,7 +7,9 @@ export type TBookingState = { success: boolean; message: string } | null;
 
 /**
  * POST /api/booking/new_booking with { serviceId, bookingDate, startTime, address }.
- * The chosen slot arrives as "<isoDate>|<startTime>" in the `slot` field.
+ *
+ * A slot only fixes the time of day — the backend does not pin it to the slot's
+ * own date — so the customer picks the date and the slot supplies the time.
  */
 export const createBooking = async (
   prevState: TBookingState,
@@ -21,15 +23,28 @@ export const createBooking = async (
   }
 
   const serviceId = String(formData.get("serviceId") ?? "");
-  const [bookingDate, startTime] = String(formData.get("slot") ?? "").split("|");
+  const chosenDate = String(formData.get("bookingDate") ?? "");
+  const startTime = String(formData.get("startTime") ?? "");
   const address = String(formData.get("address") ?? "").trim();
 
-  if (!serviceId || !bookingDate || !startTime) {
-    return { success: false, message: "Please choose an available slot." };
+  if (!serviceId || !startTime) {
+    return { success: false, message: "Please choose a time slot." };
+  }
+
+  if (!chosenDate) {
+    return { success: false, message: "Please choose a date." };
   }
 
   if (!address) {
     return { success: false, message: "Please add the service address." };
+  }
+
+  // The date input gives "2026-10-11"; pin it to UTC midnight so the stored
+  // date cannot drift a day either way with the server's timezone.
+  const bookingDate = new Date(`${chosenDate}T00:00:00.000Z`);
+
+  if (Number.isNaN(bookingDate.getTime())) {
+    return { success: false, message: "That date is not valid." };
   }
 
   try {
@@ -41,7 +56,12 @@ export const createBooking = async (
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ serviceId, bookingDate, startTime, address }),
+        body: JSON.stringify({
+          serviceId,
+          bookingDate: bookingDate.toISOString(),
+          startTime,
+          address,
+        }),
       }
     );
 
