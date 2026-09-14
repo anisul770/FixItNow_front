@@ -1,60 +1,32 @@
-import { cookies } from "next/headers";
 import { cache } from "react";
 
 import type { IUser } from "@/lib/types";
 
-import { refreshAccessToken } from "./refreshAccessToken";
+import { authorizedRequest } from "./authorizedRequest";
 
 type TSessionError = { success: boolean; message: string };
 
-const fetchMe = (accessToken: string) =>
-  fetch(`${process.env.BACKEND_API_URL}/api/users/me`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    cache: "no-store",
-  });
-
 export const getCurrentUser = cache(
   async (): Promise<IUser | TSessionError> => {
-    const cookieStore = await cookies();
-    let accessToken: string | undefined = cookieStore.get("accessToken")?.value;
-
-    if (!accessToken) {
-      accessToken = (await refreshAccessToken()) ?? undefined;
-    }
-
-    if (!accessToken) {
-      return {
-        success: false,
-        message: "User not logged in!",
-      };
-    }
-
     try {
-      let res = await fetchMe(accessToken);
+      const result = await authorizedRequest("/api/users/me");
 
-      if (!res.ok) {
-        const refreshedToken = await refreshAccessToken();
-
-        if (refreshedToken) {
-          res = await fetchMe(refreshedToken);
-        }
-      }
-
-      if (!res.ok) {
+      if (!result) {
         return {
           success: false,
-          message: "Your session has expired. Please log in again.",
+          message: "User not logged in!",
         };
       }
 
-      const result = await res.json();
+      const profile = (result.data as { profile?: IUser } | undefined)
+        ?.profile;
 
       return (
-        result?.data?.profile ?? {
+        profile ?? {
           success: false,
-          message: "Could not load your profile.",
+          message:
+            (result.message as string) ??
+            "Your session has expired. Please log in again.",
         }
       );
     } catch {
