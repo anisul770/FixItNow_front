@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { updateUserStatus } from "../_actions/admin/updateUserStatus";
+import { updateUserStatus } from "../_actions/(admin)/updateUserStatus";
 
 interface IUserStatusActionsProps {
   userId: string;

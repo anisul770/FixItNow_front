@@ -1,6 +1,6 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
+import { refresh, revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
@@ -54,9 +54,14 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
             sameSite : "lax"
         })
 
-        // Every page renders the navbar from the session, so the whole tree's
-        // cached output is stale the moment the session changes.
+        // revalidatePath tells the SERVER not to serve a stale render of any
+        // route sharing the root layout on the next request. refresh() tells
+        // THIS browser to drop every route it already has cached client-side
+        // — without it, pages visited earlier in the session (home, other
+        // dashboards) keep showing pre-login content until their own cache
+        // naturally expires.
         revalidatePath("/", "layout");
+        refresh();
 
         redirect("/");
     }

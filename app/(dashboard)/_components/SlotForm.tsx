@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createSlots } from "../_actions/technician/createSlots";
+import { createSlots } from "../_actions/(technician)/createSlots";
 
 const SlotForm = () => {
   const [state, action, pending] = useActionState(createSlots, null);

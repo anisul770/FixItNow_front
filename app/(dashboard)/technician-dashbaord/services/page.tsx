@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { getCategories } from "@/service/getCategories";
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getTechnicianProfile } from "../../_actions/technician/getTechnicianProfile";
+import { getTechnicianProfile } from "../../_actions/(technician)/getTechnicianProfile";
 import ServiceForm from "../../_components/ServiceForm";
 
 export const metadata: Metadata = {

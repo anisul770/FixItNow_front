@@ -2,14 +2,29 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { cn } from "@/lib/utils";
+import type { IBookingStatus } from "@/lib/types";
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getAllBookings } from "../../_actions/admin/getAllBookings";
+import { getAllBookings } from "../../_actions/(admin)/getAllBookings";
 import { BOOKING_STATUS_UI, TONE_CLASSES } from "../../_config/payment";
 
 export const metadata: Metadata = {
   title: "Bookings | FixItNow Admin",
   description: "Every booking on the platform.",
 };
+
+const ALL_STATUSES: IBookingStatus[] = [
+  "REQUESTED",
+  "ACCEPTED",
+  "DECLINED",
+  "PAID",
+  "IN_PROGRESS",
+  "COMPLETED",
+  "CANCELLED",
+];
+
+const isBookingStatus = (value: string): value is IBookingStatus =>
+  (ALL_STATUSES as string[]).includes(value);
 
 const formatDate = (value: string) =>
   new Date(value).toLocaleDateString("en-GB", {
@@ -18,7 +33,9 @@ const formatDate = (value: string) =>
     year: "numeric",
   });
 
-export default async function AdminBookingsPage() {
+export default async function AdminBookingsPage(
+  props: PageProps<"/admin-dashboard/bookings">
+) {
   const result = await getCurrentUser();
 
   // getCurrentUser answers with a failure object when there is no session.
@@ -27,7 +44,16 @@ export default async function AdminBookingsPage() {
   if (!currentUser) redirect("/login");
   if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
-  const bookings = await getAllBookings();
+  const searchParams = await props.searchParams;
+  const statusParam = searchParams.status;
+  const rawStatus = Array.isArray(statusParam) ? statusParam[0] : statusParam;
+  const activeStatus =
+    rawStatus && isBookingStatus(rawStatus) ? rawStatus : null;
+
+  const allBookings = await getAllBookings();
+  const bookings = activeStatus
+    ? allBookings.filter((booking) => booking.status === activeStatus)
+    : allBookings;
 
   const sorted = [...bookings].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -37,6 +63,11 @@ export default async function AdminBookingsPage() {
     (sum, booking) => sum + (Number(booking.totalPrice) || 0),
     0
   );
+
+  // Counts always come from the unfiltered list, so switching chips shows
+  // every status's real total rather than shrinking as you filter.
+  const countFor = (status: IBookingStatus) =>
+    allBookings.filter((booking) => booking.status === status).length;
 
   return (
     <div className="flex flex-col gap-6">
@@ -57,14 +88,50 @@ export default async function AdminBookingsPage() {
         </p>
       </header>
 
+      <div
+        className="flex flex-wrap gap-2 overflow-x-auto pb-1"
+        role="group"
+        aria-label="Filter bookings by status"
+      >
+        <Link
+          href="/admin-dashboard/bookings"
+          className={cn(
+            "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors",
+            !activeStatus
+              ? "border-primary bg-primary/10 text-foreground"
+              : "border-border bg-card text-muted-foreground hover:bg-muted"
+          )}
+        >
+          All
+          <span className="tabular-nums opacity-70">{allBookings.length}</span>
+        </Link>
+
+        {ALL_STATUSES.map((status) => (
+          <Link
+            key={status}
+            href={`/admin-dashboard/bookings?status=${status}`}
+            className={cn(
+              "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors",
+              activeStatus === status
+                ? "border-primary bg-primary/10 text-foreground"
+                : "border-border bg-card text-muted-foreground hover:bg-muted"
+            )}
+          >
+            {BOOKING_STATUS_UI[status].label}
+            <span className="tabular-nums opacity-70">{countFor(status)}</span>
+          </Link>
+        ))}
+      </div>
+
       {sorted.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border px-6 py-16 text-center">
           <p className="font-heading text-base font-medium text-foreground">
             No bookings found
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Either nobody has booked yet, or the admin endpoint returned
-            nothing.
+            {activeStatus
+              ? "No bookings currently have this status."
+              : "Either nobody has booked yet, or the admin endpoint returned nothing."}
           </p>
         </div>
       ) : (
@@ -90,7 +157,12 @@ export default async function AdminBookingsPage() {
                     className="border-b border-border last:border-0"
                   >
                     <td className="px-4 py-3 whitespace-nowrap text-card-foreground">
-                      {booking.customer?.name ?? "—"}
+                      <Link
+                        href={`/admin-dashboard/bookings/${booking.id}`}
+                        className="hover:underline"
+                      >
+                        {booking.customer?.name ?? "—"}
+                      </Link>
                     </td>
                     <td className="max-w-40 truncate px-4 py-3 text-muted-foreground">
                       {booking.service?.title ?? "—"}
@@ -111,7 +183,12 @@ export default async function AdminBookingsPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums text-card-foreground">
-                      ৳{booking.totalPrice}
+                      <Link
+                        href={`/admin-dashboard/bookings/${booking.id}`}
+                        className="hover:underline"
+                      >
+                        ৳{booking.totalPrice}
+                      </Link>
                     </td>
                   </tr>
                 );

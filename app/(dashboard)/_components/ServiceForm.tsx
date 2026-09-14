@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { ICategory } from "@/lib/types";
-import { createService } from "../_actions/technician/createService";
+import { createService } from "../_actions/(technician)/createService";
 
 const SELECT_CLASSES =
   "h-9 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";

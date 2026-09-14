@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import type { IBookingStatus } from "@/lib/types";
-import { updateBookingStatus } from "../_actions/technician/updateBookingStatus";
+import { updateBookingStatus } from "../_actions/(technician)/updateBookingStatus";
 
 /**
  * What the technician may do next, per booking status. A booking waits at

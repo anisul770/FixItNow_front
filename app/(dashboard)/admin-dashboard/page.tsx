@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import type { IBookingStatus } from "@/lib/types";
 import { BOOKING_STATUS_UI, TONE_CLASSES } from "../_config/payment";
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getAllBookings } from "../_actions/admin/getAllBookings";
-import { getAllPayments } from "../_actions/admin/getAllPayments";
-import { getAllUsers } from "../_actions/admin/getAllUsers";
+import { getAllBookings } from "../_actions/(admin)/getAllBookings";
+import { getAllPayments } from "../_actions/(admin)/getAllPayments";
+import { getAllUsers } from "../_actions/(admin)/getAllUsers";
 import UsersTable from "../_components/UsersTable";
 
 export const metadata: Metadata = {
@@ -25,13 +25,24 @@ const BOOKING_STATUSES: IBookingStatus[] = [
   "CANCELLED",
 ];
 
-const StatTile = ({ label, value }: { label: string; value: string }) => (
-  <div className="rounded-xl border border-border bg-card p-4">
+const StatTile = ({
+  label,
+  value,
+  href,
+}: {
+  label: string;
+  value: string;
+  href: string;
+}) => (
+  <Link
+    href={href}
+    className="rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/50 hover:bg-muted"
+  >
     <p className="text-sm text-muted-foreground">{label}</p>
     <p className="mt-1 font-heading text-2xl font-semibold tracking-tight text-card-foreground">
       {value}
     </p>
-  </div>
+  </Link>
 );
 
 export default async function AdminDashboardPage() {
@@ -82,10 +93,26 @@ export default async function AdminDashboardPage() {
       </header>
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Link href="/admin-dashboard/users"><StatTile label="Total users" value={String(users.length)} /></Link>
-        <Link href="/admin-dashboard/technicians"><StatTile label="Technicians" value={String(technicians.length)} /></Link>
-        <StatTile label="Total bookings" value={String(bookings.length)} />
-        <StatTile label="Revenue collected" value={`৳${revenue}`} />
+        <StatTile
+          label="Total users"
+          value={String(users.length)}
+          href="/admin-dashboard/users"
+        />
+        <StatTile
+          label="Technicians"
+          value={String(technicians.length)}
+          href="/admin-dashboard/technicians"
+        />
+        <StatTile
+          label="Total bookings"
+          value={String(bookings.length)}
+          href="/admin-dashboard/bookings"
+        />
+        <StatTile
+          label="Revenue collected"
+          value={`৳${revenue}`}
+          href="/admin-dashboard/payments"
+        />
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
@@ -101,18 +128,20 @@ export default async function AdminDashboardPage() {
           ) : (
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {statusCounts.map(({ status, count }) => (
-                <li
-                  key={status}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3"
-                >
-                  <span
-                    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${TONE_CLASSES[BOOKING_STATUS_UI[status].tone]}`}
+                <li key={status}>
+                  <Link
+                    href={`/admin-dashboard/bookings?status=${status}`}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-colors hover:border-primary/50 hover:bg-muted"
                   >
-                    {BOOKING_STATUS_UI[status].label}
-                  </span>
-                  <span className="font-heading text-lg font-semibold tabular-nums text-card-foreground">
-                    {count}
-                  </span>
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${TONE_CLASSES[BOOKING_STATUS_UI[status].tone]}`}
+                    >
+                      {BOOKING_STATUS_UI[status].label}
+                    </span>
+                    <span className="font-heading text-lg font-semibold tabular-nums text-card-foreground">
+                      {count}
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>

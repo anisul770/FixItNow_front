@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { deleteSlot } from "../_actions/technician/deleteSlot";
+import { deleteSlot } from "../_actions/(technician)/deleteSlot";
 
 interface ISlotDeleteButtonProps {
   slotId: string;

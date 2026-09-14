@@ -4,21 +4,14 @@ import { notFound, redirect } from "next/navigation";
 
 import { buttonVariants } from "@/components/ui/button";
 import { getCurrentUser } from "@/service/getCurrentUser";
+import { getAllBookings } from "../../../_actions/(admin)/getAllBookings";
 import { getAllTechnicians } from "../../../_actions/(technician)/getAllTechnicians";
-import { getBookingById } from "../../../_actions/(user)/getBookingById";
 import { getPaymentDetails } from "../../../_actions/(user)/getPaymentDetails";
-import PayButton from "../../../_components/PayButton";
-import ReviewForm from "../../../_components/ReviewForm";
-import {
-  BOOKING_STATUS_UI,
-  PAYMENT_STATUS_UI,
-  TONE_CLASSES,
-  canPayBooking,
-} from "../../../_config/payment";
+import { BOOKING_STATUS_UI, PAYMENT_STATUS_UI, TONE_CLASSES } from "../../../_config/payment";
 
 export const metadata: Metadata = {
-  title: "Booking details | FixItNow",
-  description: "Everything about this booking and the technician handling it.",
+  title: "Booking details | FixItNow Admin",
+  description: "Full detail on one booking — customer, technician and payment.",
 };
 
 const formatDate = (value: string) =>
@@ -42,48 +35,46 @@ const Row = ({
   </div>
 );
 
-export default async function BookingDetailsPage(
-  props: PageProps<"/dashboard/bookings/[id]">
+export default async function AdminBookingDetailsPage(
+  props: PageProps<"/admin-dashboard/bookings/[id]">
 ) {
   const { id } = await props.params;
 
   const result = await getCurrentUser();
 
   // getCurrentUser answers with a failure object when there is no session.
-  const user = result && "id" in result ? result : null;
+  const currentUser = result && "id" in result ? result : null;
 
-  if (!user) redirect("/login");
+  if (!currentUser) redirect("/login");
+  if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
-  const [booking, payment] = await Promise.all([
-    getBookingById(id),
+  // GET /api/booking/:id is scoped to the booking's own customer, so an
+  // admin's token gets refused there. /api/admin/bookings is what actually
+  // grants admin visibility into any booking — find this one in that list.
+  const [allBookings, payment, technicians] = await Promise.all([
+    getAllBookings(),
     getPaymentDetails(id),
+    getAllTechnicians(),
   ]);
+
+  const booking = allBookings.find((item) => item.id === id) ?? null;
 
   if (!booking) notFound();
 
-  // The booking nests only the technician's name, so the profile comes from
-  // the technician list, matched on technicianId.
-  const technicians = await getAllTechnicians();
   const technician = technicians.find(
     (item) => item.id === booking.technicianId
   );
-
   const technicianName =
     technician?.user?.name ?? booking.technician?.user?.name ?? "Technician";
+  const customerName = booking.customer?.name ?? "Customer";
 
   const statusUi = BOOKING_STATUS_UI[booking.status];
   const paymentUi = payment ? PAYMENT_STATUS_UI[payment.status] : null;
 
-  // A job can only be reviewed once it is done, and only once.
-  const existingReview = user.customerReviews?.find(
-    (review) => review.bookingId === booking.id
-  );
-  const canReview = booking.status === "COMPLETED";
-
   return (
     <div className="flex flex-col gap-6">
       <Link
-        href="/dashboard/bookings"
+        href="/admin-dashboard/bookings"
         className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
       >
         ← Back to bookings
@@ -150,9 +141,19 @@ export default async function BookingDetailsPage(
           </section>
 
           <section>
-            <h2 className="font-heading text-lg font-semibold tracking-tight">
-              Payment
-            </h2>
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="font-heading text-lg font-semibold tracking-tight">
+                Payment
+              </h2>
+              {payment && (
+                <Link
+                  href={`/admin-dashboard/payments/${booking.id}`}
+                  className="text-xs font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                >
+                  Full payment details →
+                </Link>
+              )}
+            </div>
 
             {payment ? (
               <dl className="mt-3 rounded-xl border border-border bg-card px-4 py-2 text-sm">
@@ -168,19 +169,8 @@ export default async function BookingDetailsPage(
                   </span>
                 </Row>
                 <Row label="Amount">৳{payment.amount}</Row>
-                {/* These four are null until the payment settles. */}
                 <Row label="Paid on">
                   {payment.paidAt ? formatDate(payment.paidAt) : "—"}
-                </Row>
-                <Row label="Method">
-                  {payment.method
-                    ? `${payment.method}${payment.methodType ? ` · ${payment.methodType}` : ""}`
-                    : "—"}
-                </Row>
-                <Row label="Transaction">
-                  <span className="font-mono text-xs">
-                    {payment.transactionId ?? "—"}
-                  </span>
                 </Row>
               </dl>
             ) : (
@@ -189,32 +179,30 @@ export default async function BookingDetailsPage(
               </p>
             )}
           </section>
-
-          <section>
-            <h2 className="font-heading text-lg font-semibold tracking-tight">
-              {existingReview ? "Your review" : "Leave a review"}
-            </h2>
-
-            {canReview ? (
-              <div className="mt-3 rounded-xl border border-border bg-card p-5">
-                {existingReview && (
-                  <p className="mb-4 text-xs text-muted-foreground">
-                    You reviewed this job on {formatDate(existingReview.createdAt)}
-                    . Editing replaces what you wrote.
-                  </p>
-                )}
-
-                <ReviewForm bookingId={booking.id} review={existingReview} />
-              </div>
-            ) : (
-              <p className="mt-2 text-sm text-muted-foreground">
-                You can review this job once the technician marks it complete.
-              </p>
-            )}
-          </section>
         </div>
 
         <aside className="flex flex-col gap-4">
+          <div className="rounded-xl border border-border bg-card p-5">
+            <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              Customer
+            </p>
+            <div className="mt-3 flex items-center gap-3">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                {customerName.charAt(0).toUpperCase()}
+              </span>
+              <div className="min-w-0">
+                <p className="truncate font-heading text-base font-semibold tracking-tight text-card-foreground">
+                  {customerName}
+                </p>
+                {booking.customer?.email && (
+                  <p className="truncate text-xs text-muted-foreground">
+                    {booking.customer.email}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
           <div className="rounded-xl border border-border bg-card p-5">
             <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
               Technician
@@ -250,67 +238,27 @@ export default async function BookingDetailsPage(
               </div>
             </div>
 
-            {technician ? (
-              <>
-                <dl className="mt-4 border-t border-border pt-2 text-sm">
-                  <Row label="Experience">{technician.experience} yrs</Row>
-                  <Row label="Hourly rate">৳{technician.hourlyRate}</Row>
-                  <Row label="Rating">
-                    {technician.totalReviews > 0
-                      ? `${technician.averageRating.toFixed(1)} (${technician.totalReviews})`
-                      : "No ratings yet"}
-                  </Row>
-                </dl>
+            {technician && (
+              <dl className="mt-4 border-t border-border pt-2 text-sm">
+                <Row label="Experience">{technician.experience} yrs</Row>
+                <Row label="Hourly rate">৳{technician.hourlyRate}</Row>
+                <Row label="Rating">
+                  {technician.totalReviews > 0
+                    ? `${technician.averageRating.toFixed(1)} (${technician.totalReviews})`
+                    : "No ratings yet"}
+                </Row>
+              </dl>
+            )}
 
-                {technician.bio && (
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {technician.bio}
-                  </p>
-                )}
-
-                {technician.skills.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {technician.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <Link
-                  href={`/technicians/${technician.id}`}
-                  className={`mt-4 w-full ${buttonVariants({ variant: "outline", size: "sm" })}`}
-                >
-                  View full profile
-                </Link>
-              </>
-            ) : (
-              <p className="mt-3 text-sm text-muted-foreground">
-                This technician&apos;s public profile is not available.
-              </p>
+            {technician && (
+              <Link
+                href={`/technicians/${technician.id}`}
+                className={`mt-4 w-full ${buttonVariants({ variant: "outline", size: "sm" })}`}
+              >
+                View public profile
+              </Link>
             )}
           </div>
-
-          {canPayBooking(booking.status, payment) && (
-            <div className="rounded-xl border border-border bg-card p-5">
-              <p className="text-sm text-muted-foreground">
-                {payment?.status === "FAILED"
-                  ? "The last attempt did not go through."
-                  : "This booking is accepted and ready to pay."}
-              </p>
-              <div className="mt-3">
-                <PayButton
-                  bookingId={booking.id}
-                  amount={booking.totalPrice}
-                  label={payment?.status === "FAILED" ? "Try again" : undefined}
-                />
-              </div>
-            </div>
-          )}
         </aside>
       </div>
     </div>

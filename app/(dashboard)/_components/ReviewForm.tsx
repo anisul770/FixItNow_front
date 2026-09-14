@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { IReview } from "@/lib/types";
-import { createReview } from "../_actions/user/createReview";
-import { updateReview } from "../_actions/user/updateReview";
+import { createReview } from "../_actions/(user)/createReview";
+import { updateReview } from "../_actions/(user)/updateReview";
 
 const RATINGS = [1, 2, 3, 4, 5];
 

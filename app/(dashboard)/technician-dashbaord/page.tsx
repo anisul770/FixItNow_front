@@ -4,9 +4,9 @@ import { redirect } from "next/navigation";
 import type { IBookingStatus } from "@/lib/types";
 import { getCurrentUser } from "@/service/getCurrentUser";
 import { BOOKING_STATUS_UI, TONE_CLASSES } from "../_config/payment";
-import { getMySlots } from "../_actions/technician/getMySlots";
-import { getTechnicianBookings } from "../_actions/technician/getTechnicianBookings";
-import { getTechnicianProfile } from "../_actions/technician/getTechnicianProfile";
+import { getMySlots } from "../_actions/(technician)/getMySlots";
+import { getTechnicianBookings } from "../_actions/(technician)/getTechnicianBookings";
+import { getTechnicianProfile } from "../_actions/(technician)/getTechnicianProfile";
 
 export const metadata: Metadata = {
   title: "Technician dashboard | FixItNow",

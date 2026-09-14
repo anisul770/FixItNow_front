@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getMyPayments } from "../../_actions/user/getMyPayments";
+import { getMyPayments } from "../../_actions/(user)/getMyPayments";
 import PayButton from "../../_components/PayButton";
 import { PAYMENT_STATUS_UI, TONE_CLASSES } from "../../_config/payment";
 

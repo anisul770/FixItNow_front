@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { initPayment } from "../_actions/user/initPayment";
+import { initPayment } from "../_actions/(user)/initPayment";
 
 interface IPayButtonProps {
   bookingId: string;

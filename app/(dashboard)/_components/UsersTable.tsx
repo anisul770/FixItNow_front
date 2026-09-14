@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import type { IUser } from "@/lib/types";
 
 import UserStatusActions from "./UserStatusActions";
@@ -46,7 +48,12 @@ const UsersTable = ({
           {users.map((user) => (
             <tr key={user.id} className="border-b border-border last:border-0">
               <td className="px-4 py-3 whitespace-nowrap text-card-foreground">
-                {user.name}
+                <Link
+                  href={`/admin-dashboard/users/${user.id}`}
+                  className="hover:underline"
+                >
+                  {user.name}
+                </Link>
               </td>
               <td className="max-w-48 truncate px-4 py-3 text-muted-foreground">
                 {user.email}

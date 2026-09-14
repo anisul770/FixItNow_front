@@ -1,5 +1,6 @@
 "use server";
 
+import { refresh, revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export type TProfileState = { success: boolean; message: string } | null;
@@ -37,7 +38,15 @@ export const updateProfile = async (
 
     const result = await res.json();
 
-    console.log("updateProfile:", res.status, result);
+    if (result?.success) {
+      // getCurrentUser fetches with no-store, so the data is always fresh —
+      // what was stale is the already-rendered page. revalidatePath forces a
+      // fresh server render of this route and its layouts; refresh() also
+      // drops every OTHER route this browser already has cached client-side,
+      // so a name change shows up everywhere, not just here.
+      revalidatePath("/", "layout");
+      refresh();
+    }
 
     return {
       success: Boolean(result?.success),

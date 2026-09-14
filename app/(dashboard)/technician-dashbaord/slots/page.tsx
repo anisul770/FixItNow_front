@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import type { ISlot } from "@/lib/types";
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getMySlots } from "../../_actions/technician/getMySlots";
+import { getMySlots } from "../../_actions/(technician)/getMySlots";
 import SlotDeleteButton from "../../_components/SlotDeleteButton";
 import SlotForm from "../../_components/SlotForm";
 

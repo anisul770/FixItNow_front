@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getTechnicianBookings } from "../../_actions/technician/getTechnicianBookings";
+import { getTechnicianBookings } from "../../_actions/(technician)/getTechnicianBookings";
 import BookingStatusActions from "../../_components/BookingStatusActions";
 import { BOOKING_STATUS_UI, TONE_CLASSES } from "../../_config/payment";
 

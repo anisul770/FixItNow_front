@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/service/getCurrentUser";
-import { getAllPayments } from "../../_actions/admin/getAllPayments";
+import { getAllPayments } from "../../_actions/(admin)/getAllPayments";
 import { PAYMENT_STATUS_UI, TONE_CLASSES } from "../../_config/payment";
 
 export const metadata: Metadata = {
@@ -92,7 +92,12 @@ export default async function AdminPaymentsPage() {
                     className="border-b border-border last:border-0"
                   >
                     <td className="px-4 py-3 whitespace-nowrap text-card-foreground">
-                      {payment.booking?.customer?.name ?? "—"}
+                      <Link
+                        href={`/admin-dashboard/payments/${payment.bookingId}`}
+                        className="hover:underline"
+                      >
+                        {payment.booking?.customer?.name ?? "—"}
+                      </Link>
                     </td>
                     <td className="max-w-40 truncate px-4 py-3 text-muted-foreground">
                       {payment.booking?.service?.title ?? "—"}
@@ -117,7 +122,12 @@ export default async function AdminPaymentsPage() {
                       {payment.method ?? "—"}
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums text-card-foreground">
-                      ৳{payment.amount}
+                      <Link
+                        href={`/admin-dashboard/payments/${payment.bookingId}`}
+                        className="hover:underline"
+                      >
+                        ৳{payment.amount}
+                      </Link>
                     </td>
                   </tr>
                 );

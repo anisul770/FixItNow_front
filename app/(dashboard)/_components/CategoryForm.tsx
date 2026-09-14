@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createCategory } from "../_actions/admin/createCategory";
+import { createCategory } from "../_actions/(admin)/createCategory";
 
 const CategoryForm = () => {
   const [state, action, pending] = useActionState(createCategory, null);
