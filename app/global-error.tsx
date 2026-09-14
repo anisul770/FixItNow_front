@@ -1,10 +1,5 @@
-"use client"; // Error boundaries must be Client Components
+"use client";
 
-/**
- * Catches errors thrown by the root layout itself. It replaces that layout
- * while active, so it must ship its own html and body — and its own styles,
- * since the layout's stylesheet is not applied here.
- */
 export default function GlobalError({
   error,
   retry,

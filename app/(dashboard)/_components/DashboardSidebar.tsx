@@ -61,7 +61,6 @@ const BROWSE_ITEMS: INavItem[] = [
 
 interface IDashboardSidebarProps {
   user: IUser;
-  /** Completed jobs the customer has not rated — badged on My reviews. */
   pendingReviews?: number;
 }
 

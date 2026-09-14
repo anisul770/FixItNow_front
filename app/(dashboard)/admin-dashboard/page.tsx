@@ -48,11 +48,9 @@ const StatTile = ({
 export default async function AdminDashboardPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");
-  if (user.role !== "ADMIN") redirect("/dashboard");
 
   const [users, bookings, payments] = await Promise.all([
     getAllUsers(),
@@ -64,7 +62,6 @@ export default async function AdminDashboardPage() {
   const customers = users.filter((item) => item.role === "CUSTOMER");
   const blocked = users.filter((item) => item.activeStatus === "BLOCKED");
 
-  // Only COMPLETED payments have actually settled.
   const revenue = payments
     .filter((payment) => payment.status === "COMPLETED")
     .reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);

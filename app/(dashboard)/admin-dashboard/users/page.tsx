@@ -14,11 +14,9 @@ export const metadata: Metadata = {
 export default async function AdminUsersPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const currentUser = result && "id" in result ? result : null;
 
   if (!currentUser) redirect("/login");
-  if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
   const users = await getAllUsers();
 

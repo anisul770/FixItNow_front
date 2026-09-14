@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 export default async function TechniciansPage() {
   const technicians = await getAllTechnicians();
 
-  // Verified profiles first, then by rating.
   const sorted = [...technicians].sort((a, b) => {
     if (a.verified !== b.verified) return a.verified ? -1 : 1;
     return b.averageRating - a.averageRating;

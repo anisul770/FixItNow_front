@@ -7,10 +7,6 @@ import { Button } from "@/components/ui/button";
 import type { IBookingStatus } from "@/lib/types";
 import { updateBookingStatus } from "../_actions/(technician)/updateBookingStatus";
 
-/**
- * What the technician may do next, per booking status. A booking waits at
- * ACCEPTED until the customer pays, then moves PAID → IN_PROGRESS → COMPLETED.
- */
 const NEXT_ACTIONS: Partial<
   Record<
     IBookingStatus,

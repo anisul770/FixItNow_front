@@ -1,4 +1,4 @@
-"use client"; // Error boundaries must be Client Components
+"use client";
 
 import Link from "next/link";
 import { useEffect } from "react";
@@ -60,7 +60,6 @@ export default function ErrorPage({
           </Link>
         </div>
 
-        {/* The digest is what ties this to the server log in production. */}
         {error.digest && (
           <p className="mt-8 font-mono text-xs text-muted-foreground">
             Reference: {error.digest}

@@ -1,25 +1,18 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
+
+import { authorizedRequest } from "@/service/authorizedRequest";
 
 export type TReviewFormState = {
   success: boolean;
   message: string;
 } | null;
 
-/** POST /api/review/:bookingId with { rating, comment } */
 export const createReview = async (
   prevState: TReviewFormState,
   formData: FormData
 ): Promise<TReviewFormState> => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-
-  if (!accessToken) {
-    return { success: false, message: "You are not logged in." };
-  }
-
   const bookingId = String(formData.get("bookingId") ?? "");
   const rating = Number(formData.get("rating"));
   const comment = String(formData.get("comment") ?? "").trim();
@@ -33,29 +26,24 @@ export const createReview = async (
   }
 
   try {
-    const res = await fetch(
-      `${process.env.BACKEND_API_URL}/api/review/${bookingId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ rating, comment }),
-      }
-    );
+    const result = await authorizedRequest(`/api/review/${bookingId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rating, comment }),
+    });
 
-    const result = await res.json();
+    if (!result) {
+      return { success: false, message: "You are not logged in." };
+    }
 
-    if (result?.success) {
-      // Shown on the public service and technician pages.
+    if (result.success) {
       revalidateTag("reviews", { expire: 0 });
       revalidateTag("technicians", { expire: 0 });
     }
 
     return {
-      success: Boolean(result?.success),
-      message: result?.message ?? "Could not save your review.",
+      success: Boolean(result.success),
+      message: (result.message as string) ?? "Could not save your review.",
     };
   } catch {
     return {

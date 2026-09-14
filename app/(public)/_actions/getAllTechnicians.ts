@@ -1,9 +1,5 @@
 import type { ITechnicianProfile } from "@/lib/types";
 
-/**
- * GET /api/technician/all → data.technicians (each with its nested user).
- * Public read — no token attached.
- */
 export const getAllTechnicians = async (): Promise<ITechnicianProfile[]> => {
   try {
     const res = await fetch(

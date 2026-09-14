@@ -23,11 +23,6 @@ interface IProfileEditorProps {
   user: IUser;
 }
 
-/**
- * Holds the optimistic copy of name/phone/address so the summary card next
- * to the form updates the instant Save is pressed, not once the request
- * that follows resolves. The toast reports what that request found out.
- */
 const ProfileEditor = ({ user }: IProfileEditorProps) => {
   const [pending, setPending] = useState(false);
 
@@ -56,7 +51,6 @@ const ProfileEditor = ({ user }: IProfileEditorProps) => {
     const phone = String(formData.get("phone") ?? "").trim();
     const address = String(formData.get("address") ?? "").trim();
 
-    // Shown right away — the request behind it hasn't been sent yet.
     setOptimisticUser({ name, phone, address });
 
     setPending(true);
@@ -80,7 +74,11 @@ const ProfileEditor = ({ user }: IProfileEditorProps) => {
         </h2>
 
         <div className="mt-4 rounded-xl border border-border bg-card p-5">
-          <form action={formAction} className="flex flex-col gap-5">
+          <form
+            key={user.updatedAt}
+            action={formAction}
+            className="flex flex-col gap-5"
+          >
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="name">Full name</Label>
               <Input

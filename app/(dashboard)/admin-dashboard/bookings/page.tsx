@@ -38,11 +38,9 @@ export default async function AdminBookingsPage(
 ) {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const currentUser = result && "id" in result ? result : null;
 
   if (!currentUser) redirect("/login");
-  if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
   const searchParams = await props.searchParams;
   const statusParam = searchParams.status;
@@ -64,8 +62,6 @@ export default async function AdminBookingsPage(
     0
   );
 
-  // Counts always come from the unfiltered list, so switching chips shows
-  // every status's real total rather than shrinking as you filter.
   const countFor = (status: IBookingStatus) =>
     allBookings.filter((booking) => booking.status === status).length;
 

@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { INavItem, IUser, TUserRole } from "@/lib/types";
+import type { INavItem, IUser } from "@/lib/types";
+import { DASHBOARD_PATH_BY_ROLE } from "@/lib/routes";
 import { logout } from "@/service/logout";
 
 const PUBLIC_LINKS: INavItem[] = [
@@ -14,12 +15,6 @@ const PUBLIC_LINKS: INavItem[] = [
   { label: "Services", href: "/services" },
   { label: "Technicians", href: "/technicians" },
 ];
-
-const DASHBOARD_BY_ROLE: Record<TUserRole, string> = {
-  CUSTOMER: "/dashboard",
-  TECHNICIAN: "/technician-dashbaord",
-  ADMIN: "/admin-dashboard",
-};
 
 const getInitials = (name: string) =>
   name
@@ -39,7 +34,6 @@ const NavbarClient = ({ user }: INavbarClientProps) => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Any navigation should leave both menus closed.
   useEffect(() => {
     setMobileOpen(false);
     setUserMenuOpen(false);
@@ -61,7 +55,7 @@ const NavbarClient = ({ user }: INavbarClientProps) => {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-  const dashboardHref = user ? DASHBOARD_BY_ROLE[user.role] : null;
+  const dashboardHref = user ? DASHBOARD_PATH_BY_ROLE[user.role] : null;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur">

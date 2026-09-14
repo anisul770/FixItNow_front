@@ -6,13 +6,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import type { IUser } from "@/lib/types";
+import { DASHBOARD_PATH_BY_ROLE } from "@/lib/routes";
 import { logout } from "@/service/logout";
-
-const DASHBOARD_BY_ROLE: Record<IUser["role"], string> = {
-  CUSTOMER: "/dashboard",
-  TECHNICIAN: "/technician-dashbaord",
-  ADMIN: "/admin-dashboard",
-};
 
 const getInitials = (name: string) =>
   name
@@ -99,7 +94,7 @@ const DashboardUserMenu = ({ user }: IDashboardUserMenuProps) => {
 
           <div className="flex flex-col py-1">
             <Link
-              href={DASHBOARD_BY_ROLE[user.role]}
+              href={DASHBOARD_PATH_BY_ROLE[user.role]}
               className="px-4 py-2 text-sm text-popover-foreground transition-colors hover:bg-muted"
             >
               Dashboard

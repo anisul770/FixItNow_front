@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   description: "Your booking has been paid.",
 };
 
-/** Where the gateway's success callback should send the customer. */
 export default async function PaymentSuccessPage(
   props: PageProps<"/payment/[bookingId]/success">
 ) {

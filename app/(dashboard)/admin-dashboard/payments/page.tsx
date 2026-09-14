@@ -21,11 +21,9 @@ const formatDate = (value: string) =>
 export default async function AdminPaymentsPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const currentUser = result && "id" in result ? result : null;
 
   if (!currentUser) redirect("/login");
-  if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
   const payments = await getAllPayments();
 
@@ -33,7 +31,6 @@ export default async function AdminPaymentsPage() {
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
-  // Only COMPLETED payments have actually settled.
   const settled = payments.filter((payment) => payment.status === "COMPLETED");
   const revenue = settled.reduce(
     (sum, payment) => sum + (Number(payment.amount) || 0),
@@ -114,7 +111,6 @@ export default async function AdminPaymentsPage() {
                         {ui?.label ?? payment.status}
                       </span>
                     </td>
-                    {/* Null until settlement. */}
                     <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
                       {payment.paidAt ? formatDate(payment.paidAt) : "—"}
                     </td>

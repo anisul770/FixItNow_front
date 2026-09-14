@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DASHBOARD_PATH_BY_ROLE } from "@/lib/routes";
+import { getCurrentUser } from "@/service/getCurrentUser";
 import RegisterForm from "../_components/RegisterForm";
 
 export const metadata: Metadata = {
@@ -32,10 +35,14 @@ function BoltMark({ className }: { className?: string }) {
   );
 }
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const result = await getCurrentUser();
+  const user = result && "id" in result ? result : null;
+
+  if (user) redirect(DASHBOARD_PATH_BY_ROLE[user.role]);
+
   return (
     <main className="grid w-full min-h-svh lg:grid-cols-2">
-      {/* Brand panel — always dark, so it reads as a poster in either theme */}
       <section className="relative hidden overflow-hidden bg-[oklch(0.17_0.01_107)] p-12 text-[oklch(0.98_0.003_106)] lg:flex lg:flex-col lg:justify-between">
         <div
           aria-hidden
@@ -103,7 +110,6 @@ export default function RegisterPage() {
         </p>
       </section>
 
-      {/* Form panel */}
       <section className="flex items-center justify-center px-6 py-8 sm:px-10">
         <div className="w-full max-w-lg">
           <Link
@@ -166,7 +172,6 @@ export default function RegisterPage() {
                 <span className="h-px flex-1 bg-border" />
               </div>
 
-              {/* Register Form */}
               <RegisterForm />
             </CardContent>
 

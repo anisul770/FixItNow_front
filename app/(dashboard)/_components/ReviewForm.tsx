@@ -14,7 +14,6 @@ const RATINGS = [1, 2, 3, 4, 5];
 
 interface IReviewFormProps {
   bookingId: string;
-  /** When present the form edits that review instead of creating one. */
   review?: IReview;
 }
 

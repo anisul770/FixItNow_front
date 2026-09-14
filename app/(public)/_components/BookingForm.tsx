@@ -23,7 +23,6 @@ const formatDate = (value: string) =>
 
 interface IBookingFormProps {
   serviceId: string;
-  /** Open slots only — a booking must land on one the technician published. */
   slots: ISlot[];
   defaultAddress: string;
 }
@@ -36,15 +35,12 @@ const BookingForm = ({
   const router = useRouter();
   const [state, action, pending] = useActionState(createBooking, null);
 
-  // Dates the technician actually has open slots on, earliest first.
   const dates = [...new Set(slots.map((slot) => slot.date))].sort(
     (a, b) => new Date(a).getTime() - new Date(b).getTime()
   );
 
   const [selectedDate, setSelectedDate] = useState(dates[0] ?? "");
 
-  // Only the times published on the chosen date — any other pairing is a
-  // slot the technician never opened, which the API rejects.
   const timesOnDate = slots
     .filter((slot) => slot.date === selectedDate)
     .sort((a, b) => a.startTime.localeCompare(b.startTime));

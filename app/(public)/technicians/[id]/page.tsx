@@ -50,7 +50,7 @@ export default async function TechnicianDetailsPage(
 
   const [technician, allServices, reviews] = await Promise.all([
     getTechnicianById(id),
-    getAllServices(),
+    getAllServices({ limit: "1000" }),
     getTechnicianReviews(id),
   ]);
 

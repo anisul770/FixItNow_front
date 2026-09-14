@@ -1,10 +1,5 @@
 import type { IService, IServiceFilters } from "@/lib/types";
 
-/**
- * GET /api/service/all → data.services
- * Returns an empty list on any failure so the page can render its own
- * empty state instead of throwing inside the layout.
- */
 export const getAllServices = async (
   filters: IServiceFilters = {}
 ): Promise<IService[]> => {

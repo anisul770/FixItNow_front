@@ -22,7 +22,6 @@ const formatDate = (value: string) =>
 export default async function ReviewsPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");

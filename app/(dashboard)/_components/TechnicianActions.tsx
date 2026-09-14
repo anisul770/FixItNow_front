@@ -8,9 +8,7 @@ import { updateUserStatus } from "../_actions/(admin)/updateUserStatus";
 import { verifyTechnician } from "../_actions/(admin)/verifyTechnician";
 
 interface ITechnicianActionsProps {
-  /** Technician profile id — what verify_technician expects. */
   technicianId: string;
-  /** User id — what the status endpoint expects. */
   userId: string;
   verified: boolean;
   blocked: boolean;

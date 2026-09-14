@@ -43,14 +43,10 @@ export default async function AdminUserDetailsPage(
 
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const currentUser = result && "id" in result ? result : null;
 
   if (!currentUser) redirect("/login");
-  if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
-  // /api/admin/users has no single-user counterpart, so this narrows the
-  // same list the users page already renders.
   const [users, technicians] = await Promise.all([
     getAllUsers(),
     getAllTechnicians(),
@@ -60,9 +56,6 @@ export default async function AdminUserDetailsPage(
 
   if (!user) notFound();
 
-  // Only present when the technician role's own profile is nested — cross
-  // reference the technician list by userId as a fallback, same trick used
-  // for the booking details pages.
   const technicianProfile =
     user.technicianProfile ??
     technicians.find((item) => item.userId === user.id) ??

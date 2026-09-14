@@ -51,7 +51,6 @@ const StatusBadge = ({ status }: { status: IBookingStatus }) => {
 export default async function DashboardPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");
@@ -59,8 +58,6 @@ export default async function DashboardPage() {
   const bookings: IBooking[] = user.customerBookings ?? [];
   const reviews = user.customerReviews ?? [];
 
-  // Money is committed once the booking reaches PAID; it stays counted
-  // through IN_PROGRESS and COMPLETED.
   const settled = bookings.filter(
     (booking) =>
       booking.status === "PAID" ||
@@ -85,7 +82,6 @@ export default async function DashboardPage() {
     )
     .slice(0, 5);
 
-  // Completed jobs the customer has not rated yet.
   const reviewedIds = new Set(reviews.map((review) => review.bookingId));
   const awaitingReview = bookings.filter(
     (booking) =>
@@ -208,7 +204,6 @@ export default async function DashboardPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
-                        {/* /init only accepts an ACCEPTED, unpaid booking. */}
                         {canPayBooking(booking.status) && (
                           <PayButton
                             bookingId={booking.id}

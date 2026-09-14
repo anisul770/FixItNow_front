@@ -41,11 +41,9 @@ const groupByDate = (slots: ISlot[]) => {
 export default async function TechnicianSlotsPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");
-  if (user.role !== "TECHNICIAN") redirect("/dashboard");
 
   const slots = await getMySlots();
   const grouped = groupByDate(slots);

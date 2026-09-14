@@ -9,7 +9,6 @@ import { updateUserStatus } from "../_actions/(admin)/updateUserStatus";
 interface IUserStatusActionsProps {
   userId: string;
   blocked: boolean;
-  /** True for the signed-in admin's own row, which cannot be blocked. */
   isSelf?: boolean;
 }
 

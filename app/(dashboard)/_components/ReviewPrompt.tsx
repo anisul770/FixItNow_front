@@ -7,14 +7,9 @@ import ReviewForm from "./ReviewForm";
 
 interface IReviewPromptProps {
   bookingId: string;
-  /** Compact renders just the toggle, for use inside a dense list row. */
   label?: string;
 }
 
-/**
- * A review button that opens the form where it stands, so a completed job can
- * be rated from any list without navigating to the booking.
- */
 const ReviewPrompt = ({
   bookingId,
   label = "Leave a review",

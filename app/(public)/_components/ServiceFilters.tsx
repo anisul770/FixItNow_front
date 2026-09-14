@@ -15,6 +15,8 @@ const SORT_OPTIONS = [
   { label: "Top rated", sortBy: "rating", sortOrder: "desc" },
 ];
 
+const RATING_OPTIONS = [4, 3, 2, 1];
+
 const SELECT_CLASSES =
   "h-9 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";
 
@@ -42,6 +44,7 @@ const ServiceFilters = ({
     const query = new URLSearchParams();
 
     for (const [key, value] of Object.entries(next)) {
+      if (key === "page") continue;
       if (value) query.set(key, value);
     }
 
@@ -59,14 +62,16 @@ const ServiceFilters = ({
     router.push("/services");
   };
 
-  const hasFilters = Object.values(filters).some(Boolean);
+  const hasFilters = Object.entries(filters).some(
+    ([key, value]) => key !== "page" && Boolean(value)
+  );
 
   return (
     <form
       onSubmit={handleSubmit}
       className="rounded-xl border border-border bg-card p-4"
     >
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-1.5 lg:col-span-2">
           <Label htmlFor="searchTerm">Search</Label>
           <Input
@@ -98,27 +103,46 @@ const ServiceFilters = ({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="minPrice">Price range</Label>
-          <div className="flex items-center gap-2">
-            <Input
-              id="minPrice"
-              name="minPrice"
-              type="number"
-              min={0}
-              placeholder="Min"
-              value={filters.minPrice ?? ""}
-              onChange={(event) => update({ minPrice: event.target.value })}
-            />
-            <Input
-              id="maxPrice"
-              name="maxPrice"
-              type="number"
-              min={0}
-              placeholder="Max"
-              value={filters.maxPrice ?? ""}
-              onChange={(event) => update({ maxPrice: event.target.value })}
-            />
-          </div>
+          <Label htmlFor="price">Minimum price (৳)</Label>
+          <Input
+            id="price"
+            name="price"
+            type="number"
+            min={0}
+            placeholder="e.g. 200"
+            value={filters.price ?? ""}
+            onChange={(event) => update({ price: event.target.value })}
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="location">Location</Label>
+          <Input
+            id="location"
+            name="location"
+            type="text"
+            placeholder="Dhaka"
+            value={filters.location ?? ""}
+            onChange={(event) => update({ location: event.target.value })}
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="rating">Minimum rating</Label>
+          <select
+            id="rating"
+            name="rating"
+            className={SELECT_CLASSES}
+            value={filters.rating ?? ""}
+            onChange={(event) => update({ rating: event.target.value })}
+          >
+            <option value="">Any rating</option>
+            {RATING_OPTIONS.map((value) => (
+              <option key={value} value={value}>
+                {value}+ stars
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="flex flex-col gap-1.5">

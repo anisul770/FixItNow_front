@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   description: "The payment did not go through.",
 };
 
-/** Where the gateway's fail callback should send the customer. */
 export default async function PaymentFailPage(
   props: PageProps<"/payment/[bookingId]/fail">
 ) {

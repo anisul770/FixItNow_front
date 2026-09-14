@@ -32,10 +32,6 @@ export const BOOKING_STATUS_UI: Record<
   CANCELLED: { label: "Cancelled", tone: "danger" },
 };
 
-/**
- * /init throws unless the booking is ACCEPTED, unpaid, and owned by the
- * caller — so the pay button belongs nowhere else.
- */
 export const canPayBooking = (
   bookingStatus: IBookingStatus,
   payment?: { status: IPaymentStatus } | null

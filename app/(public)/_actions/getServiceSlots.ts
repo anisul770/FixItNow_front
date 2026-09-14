@@ -1,6 +1,5 @@
 import type { ISlot } from "@/lib/types";
 
-/** GET /api/technician/availability/:serviceId → data.slots */
 export const getServiceSlots = async (serviceId: string): Promise<ISlot[]> => {
   try {
     const res = await fetch(

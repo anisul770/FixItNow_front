@@ -4,7 +4,6 @@ import { refresh, revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
-
 type LoginState = {
     success: true,
     statusCode: number,
@@ -24,7 +23,6 @@ type RegisterResult = {
 export type RegisterState = RegisterResult | null;
 
 export const loginAction = async (prevState: LoginState, formData: FormData) => {
-    console.log(prevState);
     const email = formData.get("email");
     const password = formData.get("password");
 
@@ -54,12 +52,6 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
             sameSite : "lax"
         })
 
-        // revalidatePath tells the SERVER not to serve a stale render of any
-        // route sharing the root layout on the next request. refresh() tells
-        // THIS browser to drop every route it already has cached client-side
-        // — without it, pages visited earlier in the session (home, other
-        // dashboards) keep showing pre-login content until their own cache
-        // naturally expires.
         revalidatePath("/", "layout");
         refresh();
 
@@ -80,7 +72,6 @@ export const registerAction = async (initialState: RegisterState, formData: Form
         password: formData.get("password")
     }
 
-    // Technicians carry two extra fields the backend requires for their profile.
     if (role === "TECHNICIAN") {
         payload.experience = Number(formData.get("experience"));
         payload.hourlyRate = Number(formData.get("hourlyRate"));

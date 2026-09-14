@@ -42,15 +42,10 @@ export default async function AdminBookingDetailsPage(
 
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const currentUser = result && "id" in result ? result : null;
 
   if (!currentUser) redirect("/login");
-  if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
-  // GET /api/booking/:id is scoped to the booking's own customer, so an
-  // admin's token gets refused there. /api/admin/bookings is what actually
-  // grants admin visibility into any booking — find this one in that list.
   const [allBookings, payment, technicians] = await Promise.all([
     getAllBookings(),
     getPaymentDetails(id),

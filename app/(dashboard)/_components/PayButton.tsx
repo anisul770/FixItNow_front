@@ -9,7 +9,6 @@ import { initPayment } from "../_actions/(user)/initPayment";
 interface IPayButtonProps {
   bookingId: string;
   amount: number;
-  /** Overrides the default label — e.g. "Try again" after a failed attempt. */
   label?: string;
 }
 
@@ -22,7 +21,6 @@ const PayButton = ({ bookingId, amount, label }: IPayButtonProps) => {
 
       if (result.success && result.url) {
         toast.success(result.message);
-        // Hand the browser to SSLCommerz — the customer enters card details there.
         window.location.href = result.url;
         return;
       }

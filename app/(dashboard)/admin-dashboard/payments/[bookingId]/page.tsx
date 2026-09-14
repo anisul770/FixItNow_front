@@ -40,14 +40,10 @@ export default async function AdminPaymentDetailsPage(
 
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const currentUser = result && "id" in result ? result : null;
 
   if (!currentUser) redirect("/login");
-  if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
-  // GET /api/payment/:bookingId/details — the contract documents this as
-  // CUSTOMER · ADMIN, admins seeing any booking's payment.
   const payment = await getPaymentDetails(bookingId);
 
   if (!payment) notFound();
@@ -94,7 +90,6 @@ export default async function AdminPaymentDetailsPage(
             <dl className="mt-3 rounded-xl border border-border bg-card px-4 py-2 text-sm">
               <Row label="Amount">৳{payment.amount}</Row>
               <Row label="Provider">{payment.provider}</Row>
-              {/* These four stay null until the payment settles. */}
               <Row label="Paid on">
                 {payment.paidAt ? formatDate(payment.paidAt) : "—"}
               </Row>

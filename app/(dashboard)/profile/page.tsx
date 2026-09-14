@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 export default async function ProfilePage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");

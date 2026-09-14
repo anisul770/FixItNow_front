@@ -22,14 +22,12 @@ const formatDate = (value: string) =>
 export default async function PaymentsPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");
 
   const payments = await getMyPayments();
 
-  // /init only accepts an ACCEPTED booking, so nothing else can show a button.
   const paidBookingIds = new Set(
     payments
       .filter((payment) => payment.status === "COMPLETED")
@@ -159,7 +157,6 @@ export default async function PaymentsPage() {
                           {ui?.label ?? payment.status}
                         </span>
                       </td>
-                      {/* paidAt, transactionId and method are null until settlement. */}
                       <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
                         {payment.paidAt ? formatDate(payment.paidAt) : "—"}
                       </td>

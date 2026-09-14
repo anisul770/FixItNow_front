@@ -21,11 +21,9 @@ const formatDate = (value: string) =>
 export default async function AdminCategoriesPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const currentUser = result && "id" in result ? result : null;
 
   if (!currentUser) redirect("/login");
-  if (currentUser.role !== "ADMIN") redirect("/dashboard");
 
   const categories = await getCategories();
 

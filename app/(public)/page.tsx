@@ -24,16 +24,13 @@ const STEPS = [
 ];
 
 export default async function HomePage() {
-  const [services, categories] = await Promise.all([
-    getAllServices(),
+  const [featured, categories] = await Promise.all([
+    getAllServices({ limit: "6" }),
     getCategories(),
   ]);
 
-  const featured = services.slice(0, 6);
-
   return (
     <div className="flex flex-col">
-      {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div
           aria-hidden
@@ -61,7 +58,6 @@ export default async function HomePage() {
               place.
             </p>
 
-            {/* Plain GET form — no JS needed, lands on the services page */}
             <form
               action="/services"
               method="get"
@@ -100,7 +96,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Categories */}
       {categories.length > 0 && (
         <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
           <h2 className="font-heading text-2xl font-semibold tracking-tight">
@@ -129,7 +124,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Featured services */}
       {featured.length > 0 && (
         <section className="mx-auto w-full max-w-6xl px-4 pb-14 sm:px-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
@@ -152,7 +146,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* How it works */}
       <section className="border-t border-border bg-muted/40">
         <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
           <h2 className="font-heading text-2xl font-semibold tracking-tight">
@@ -177,7 +170,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Technician CTA */}
       <section className="border-t border-border">
         <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
           <div className="flex flex-wrap items-center justify-between gap-6 rounded-2xl border border-border bg-card p-8">

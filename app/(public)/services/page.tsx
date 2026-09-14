@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
+import { buttonVariants } from "@/components/ui/button";
 import type { IServiceFilters } from "@/lib/types";
 import { getCategories } from "@/service/getCategories";
 import { getAllServices } from "../_actions/getAllServices";
@@ -11,28 +13,49 @@ export const metadata: Metadata = {
   description: "Browse repair and maintenance services from vetted technicians.",
 };
 
-/** searchParams values arrive as string | string[] | undefined. */
+const PAGE_SIZE = 10;
+
 const first = (value: string | string[] | undefined) =>
   Array.isArray(value) ? value[0] : (value ?? "");
 
 export default async function ServicesPage(props: PageProps<"/services">) {
   const searchParams = await props.searchParams;
 
+  const page = Math.max(1, Number(first(searchParams.page)) || 1);
+
   const filters: IServiceFilters = {
     searchTerm: first(searchParams.searchTerm),
     categoryId: first(searchParams.categoryId),
-    minPrice: first(searchParams.minPrice),
-    maxPrice: first(searchParams.maxPrice),
+    price: first(searchParams.price),
+    location: first(searchParams.location),
+    rating: first(searchParams.rating),
     sortBy: first(searchParams.sortBy),
     sortOrder: first(searchParams.sortOrder),
+    page: String(page),
   };
 
-  const isFiltered = Object.values(filters).some(Boolean);
+  const isFiltered = Object.entries(filters).some(
+    ([key, value]) => key !== "page" && Boolean(value)
+  );
 
   const [services, categories] = await Promise.all([
     getAllServices(filters),
     getCategories(),
   ]);
+
+  const hasNextPage = services.length === PAGE_SIZE;
+
+  const pageHref = (targetPage: number) => {
+    const query = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (key !== "page" && value) query.set(key, value);
+    }
+    if (targetPage > 1) query.set("page", String(targetPage));
+
+    const queryString = query.toString();
+    return queryString ? `/services?${queryString}` : "/services";
+  };
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
@@ -53,19 +76,34 @@ export default async function ServicesPage(props: PageProps<"/services">) {
       {services.length === 0 ? (
         <div className="mt-8 rounded-xl border border-dashed border-border px-6 py-16 text-center">
           <p className="font-heading text-base font-medium text-foreground">
-            {isFiltered ? "No services match those filters" : "No services available right now"}
+            {page > 1
+              ? "No more services"
+              : isFiltered
+                ? "No services match those filters"
+                : "No services available right now"}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {isFiltered
-              ? "Try widening the price range or clearing the search."
-              : "Check back shortly — technicians add new services regularly."}
+            {page > 1
+              ? "You've reached the end of the results."
+              : isFiltered
+                ? "Try widening the price range or clearing the search."
+                : "Check back shortly — technicians add new services regularly."}
           </p>
+          {page > 1 && (
+            <Link
+              href={pageHref(1)}
+              className={`mt-4 ${buttonVariants({ variant: "outline", size: "sm" })}`}
+            >
+              Back to first page
+            </Link>
+          )}
         </div>
       ) : (
         <>
           <p className="mt-6 text-sm text-muted-foreground">
-            {services.length} {services.length === 1 ? "service" : "services"}{" "}
-            {isFiltered ? "found" : "available"}
+            Showing {services.length}{" "}
+            {services.length === 1 ? "service" : "services"}
+            {page > 1 ? ` · page ${page}` : ""}
           </p>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -73,6 +111,30 @@ export default async function ServicesPage(props: PageProps<"/services">) {
               <ServiceCard key={service.id} service={service} />
             ))}
           </div>
+
+          {(page > 1 || hasNextPage) && (
+            <div className="mt-8 flex items-center justify-between gap-3">
+              {page > 1 ? (
+                <Link
+                  href={pageHref(page - 1)}
+                  className={buttonVariants({ variant: "outline", size: "sm" })}
+                >
+                  ← Previous
+                </Link>
+              ) : (
+                <span />
+              )}
+
+              {hasNextPage && (
+                <Link
+                  href={pageHref(page + 1)}
+                  className={buttonVariants({ variant: "outline", size: "sm" })}
+                >
+                  Next →
+                </Link>
+              )}
+            </div>
+          )}
         </>
       )}
     </div>

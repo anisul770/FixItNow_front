@@ -49,7 +49,6 @@ export default async function BookingDetailsPage(
 
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");
@@ -61,8 +60,6 @@ export default async function BookingDetailsPage(
 
   if (!booking) notFound();
 
-  // The booking nests only the technician's name, so the profile comes from
-  // the technician list, matched on technicianId.
   const technicians = await getAllTechnicians();
   const technician = technicians.find(
     (item) => item.id === booking.technicianId
@@ -74,7 +71,6 @@ export default async function BookingDetailsPage(
   const statusUi = BOOKING_STATUS_UI[booking.status];
   const paymentUi = payment ? PAYMENT_STATUS_UI[payment.status] : null;
 
-  // A job can only be reviewed once it is done, and only once.
   const existingReview = user.customerReviews?.find(
     (review) => review.bookingId === booking.id
   );
@@ -168,7 +164,6 @@ export default async function BookingDetailsPage(
                   </span>
                 </Row>
                 <Row label="Amount">৳{payment.amount}</Row>
-                {/* These four are null until the payment settles. */}
                 <Row label="Paid on">
                   {payment.paidAt ? formatDate(payment.paidAt) : "—"}
                 </Row>

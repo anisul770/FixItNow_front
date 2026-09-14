@@ -46,11 +46,9 @@ const StatusBadge = ({ status }: { status: IBookingStatus }) => {
 export default async function TechnicianDashboardPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");
-  if (user.role !== "TECHNICIAN") redirect("/dashboard");
 
   const [profile, bookings, slots] = await Promise.all([
     getTechnicianProfile(),
@@ -59,7 +57,6 @@ export default async function TechnicianDashboardPage() {
   ]);
 
   const services = profile?.services ?? [];
-  // A new booking arrives as REQUESTED and waits for the technician.
   const pending = bookings.filter((booking) => booking.status === "REQUESTED");
   const settled = bookings.filter(
     (booking) =>

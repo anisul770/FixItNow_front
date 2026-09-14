@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   description: "The payment was cancelled before it completed.",
 };
 
-/** Where the gateway's cancel callback should send the customer. */
 export default async function PaymentCancelPage(
   props: PageProps<"/payment/[bookingId]/cancel">
 ) {

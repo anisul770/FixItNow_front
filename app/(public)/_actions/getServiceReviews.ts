@@ -1,6 +1,5 @@
 import type { IReview } from "@/lib/types";
 
-/** GET /api/review/service/:serviceId → data.reviews */
 export const getServiceReviews = async (
   serviceId: string
 ): Promise<IReview[]> => {

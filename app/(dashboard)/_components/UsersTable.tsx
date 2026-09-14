@@ -16,9 +16,7 @@ const toTitleCase = (value: string) =>
 
 interface IUsersTableProps {
   users: IUser[];
-  /** Adds a block/unblock column — off on the dashboard preview. */
   showActions?: boolean;
-  /** The signed-in admin, so their own row cannot be blocked. */
   currentUserId?: string;
 }
 

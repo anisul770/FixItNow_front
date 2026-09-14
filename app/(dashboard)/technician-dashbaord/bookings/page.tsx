@@ -21,15 +21,12 @@ const formatDate = (value: string) =>
 export default async function TechnicianBookingsPage() {
   const result = await getCurrentUser();
 
-  // getCurrentUser answers with a failure object when there is no session.
   const user = result && "id" in result ? result : null;
 
   if (!user) redirect("/login");
-  if (user.role !== "TECHNICIAN") redirect("/dashboard");
 
   const bookings = await getTechnicianBookings();
 
-  // Anything needing a decision first, then the rest newest-first.
   const needsAction = new Set(["REQUESTED", "PAID", "IN_PROGRESS"]);
   const sorted = [...bookings].sort((a, b) => {
     const aUrgent = needsAction.has(a.status) ? 0 : 1;

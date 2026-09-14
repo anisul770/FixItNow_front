@@ -1,40 +1,26 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
 
-/**
- * DELETE /api/technician/slots/:slotId.
- * The API refuses to delete a slot that is already booked.
- */
+import { authorizedRequest } from "@/service/authorizedRequest";
+
 export const deleteSlot = async (slotId: string) => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-
-  if (!accessToken) {
-    return { success: false, message: "You are not logged in." };
-  }
-
   try {
-    const res = await fetch(
-      `${process.env.BACKEND_API_URL}/api/technician/slots/${slotId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const result = await authorizedRequest(`/api/technician/slots/${slotId}`, {
+      method: "DELETE",
+    });
 
-    const result = await res.json();
+    if (!result) {
+      return { success: false, message: "You are not logged in." };
+    }
 
-    if (result?.success) {
+    if (result.success) {
       revalidateTag("slots", { expire: 0 });
     }
 
     return {
-      success: Boolean(result?.success),
-      message: result?.message ?? "Could not delete the slot.",
+      success: Boolean(result.success),
+      message: (result.message as string) ?? "Could not delete the slot.",
     };
   } catch {
     return {

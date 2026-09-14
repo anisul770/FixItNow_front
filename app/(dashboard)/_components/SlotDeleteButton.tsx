@@ -20,7 +20,6 @@ const SlotDeleteButton = ({ slotId }: ISlotDeleteButtonProps) => {
       if (result.success) {
         toast.success(result.message);
       } else {
-        // Most often: "A booked slot can not be deleted".
         toast.error(result.message);
       }
     });

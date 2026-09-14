@@ -31,7 +31,6 @@ const Stars = ({ rating }: { rating: number }) => (
 
 interface IReviewCardProps {
   review: IReview;
-  /** Shown above the review so it is clear which job it belongs to. */
   title?: string;
 }
 

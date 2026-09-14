@@ -1,31 +1,18 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { revalidateTag } from "next/cache";
+
+import { authorizedRequest } from "@/service/authorizedRequest";
 
 export type TSlotFormState = {
   success: boolean;
   message: string;
 } | null;
 
-/**
- * POST /api/technician/new_slots with { date, startTime, endTime, slotDuration }.
- * Carves the window into slots of `slotDuration` minutes.
- *
- * The API was built against MM/DD/YYYY dates, so the YYYY-MM-DD a date input
- * produces is converted rather than sent as-is.
- */
 export const createSlots = async (
   prevState: TSlotFormState,
   formData: FormData
 ): Promise<TSlotFormState> => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-
-  if (!accessToken) {
-    return { success: false, message: "You are not logged in." };
-  }
-
   const chosenDate = String(formData.get("date") ?? "");
   const startTime = String(formData.get("startTime") ?? "");
   const endTime = String(formData.get("endTime") ?? "");
@@ -46,33 +33,28 @@ export const createSlots = async (
   const [year, month, day] = chosenDate.split("-");
 
   try {
-    const res = await fetch(
-      `${process.env.BACKEND_API_URL}/api/technician/new_slots`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          date: `${month}/${day}/${year}`,
-          startTime,
-          endTime,
-          slotDuration,
-        }),
-      }
-    );
+    const result = await authorizedRequest("/api/technician/new_slots", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        date: `${month}/${day}/${year}`,
+        startTime,
+        endTime,
+        slotDuration,
+      }),
+    });
 
-    const result = await res.json();
+    if (!result) {
+      return { success: false, message: "You are not logged in." };
+    }
 
-    if (result?.success) {
-      // Availability shown on the public service pages.
+    if (result.success) {
       revalidateTag("slots", { expire: 0 });
     }
 
     return {
-      success: Boolean(result?.success),
-      message: result?.message ?? "Could not create the slots.",
+      success: Boolean(result.success),
+      message: (result.message as string) ?? "Could not create the slots.",
     };
   } catch {
     return {
