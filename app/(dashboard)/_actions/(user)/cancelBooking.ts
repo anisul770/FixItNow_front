@@ -6,10 +6,8 @@ import { authorizedRequest } from "@/service/authorizedRequest";
 
 export const cancelBooking = async (bookingId: string) => {
   try {
-    const result = await authorizedRequest(`/api/booking/${bookingId}/status`, {
+    const result = await authorizedRequest(`/api/booking/${bookingId}/cancel`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "CANCELLED" }),
     });
 
     if (!result) {
