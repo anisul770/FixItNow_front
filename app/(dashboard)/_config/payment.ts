@@ -36,3 +36,6 @@ export const canPayBooking = (
   bookingStatus: IBookingStatus,
   payment?: { status: IPaymentStatus } | null
 ) => bookingStatus === "ACCEPTED" && payment?.status !== "COMPLETED";
+
+export const canCancelBooking = (bookingStatus: IBookingStatus) =>
+  bookingStatus !== "COMPLETED" && bookingStatus !== "CANCELLED";

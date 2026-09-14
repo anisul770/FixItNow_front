@@ -7,12 +7,14 @@ import { getCurrentUser } from "@/service/getCurrentUser";
 import { getAllTechnicians } from "../../../_actions/(technician)/getAllTechnicians";
 import { getBookingById } from "../../../_actions/(user)/getBookingById";
 import { getPaymentDetails } from "../../../_actions/(user)/getPaymentDetails";
+import CancelBookingButton from "../../../_components/CancelBookingButton";
 import PayButton from "../../../_components/PayButton";
 import ReviewForm from "../../../_components/ReviewForm";
 import {
   BOOKING_STATUS_UI,
   PAYMENT_STATUS_UI,
   TONE_CLASSES,
+  canCancelBooking,
   canPayBooking,
 } from "../../../_config/payment";
 
@@ -303,6 +305,17 @@ export default async function BookingDetailsPage(
                   amount={booking.totalPrice}
                   label={payment?.status === "FAILED" ? "Try again" : undefined}
                 />
+              </div>
+            </div>
+          )}
+
+          {canCancelBooking(booking.status) && (
+            <div className="rounded-xl border border-border bg-card p-5">
+              <p className="text-sm text-muted-foreground">
+                Changed your mind? You can cancel this booking.
+              </p>
+              <div className="mt-3">
+                <CancelBookingButton bookingId={booking.id} />
               </div>
             </div>
           )}
