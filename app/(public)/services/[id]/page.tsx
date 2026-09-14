@@ -77,6 +77,7 @@ export default async function ServiceDetailsPage(
 
   const technician = service.technician;
   const technicianName = technician?.user?.name;
+  const rating = technician?.averageRating ?? 0;
   const openSlots = slots.filter((slot) => !slot.isBooked);
   const slotsByDate = groupSlotsByDate(slots);
 
@@ -111,10 +112,8 @@ export default async function ServiceDetailsPage(
 
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5">
-                <Stars rating={Math.round(service.rating)} />
-                {service.rating > 0
-                  ? service.rating.toFixed(1)
-                  : "No rating yet"}
+                <Stars rating={Math.round(rating)} />
+                {rating > 0 ? rating.toFixed(1) : "No rating yet"}
               </span>
               <span>{reviews.length} reviews</span>
               <span>{service.duration} min</span>

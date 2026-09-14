@@ -10,6 +10,7 @@ interface IServiceCardProps {
 const ServiceCard = ({ service }: IServiceCardProps) => {
   const technicianName = service.technician?.user?.name;
   const isVerified = service.technician?.verified;
+  const rating = service.technician?.averageRating ?? 0;
 
   return (
     <article className="flex flex-col rounded-xl border border-border bg-card p-5 transition-shadow hover:shadow-md">
@@ -24,7 +25,7 @@ const ServiceCard = ({ service }: IServiceCardProps) => {
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className="size-3.5 text-primary">
             <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z" />
           </svg>
-          {service.rating > 0 ? service.rating.toFixed(1) : "New"}
+          {rating > 0 ? rating.toFixed(1) : "New"}
         </span>
       </div>
 
